@@ -342,6 +342,81 @@ END
 
 
 
+<h2>String Patterns, Ranges, Sorting, and Grouping</h2>
+
+
+<h3>Using String Patterns, Ranges</h3>
+
+__Retrieving rows from a table__
+
+<img src="../5. Databases and SQL for Data Science/images/retrieving_select.png">
+
+__Retrieving rows using a String Pattern__
+
+<img src="../5. Databases and SQL for Data Science/images/retrieving_select_pattern.png">
+
+__Retrieving rows using a Range__
+
+<img src="../5. Databases and SQL for Data Science/images/retrieving_select_range.png">
+
+__Retrieving rows using a Set of Values__
+
+<img src="../5. Databases and SQL for Data Science/images/retrieving_select_set.png">
+
+<h3>Sorting Result Sets</h3>
+
+To display the result of a query set in alphabetical order, we add the order by clause to the select statement.
+
+<img src="../5. Databases and SQL for Data Science/images/order_by.png">
+
+To sort in descending order, use the key word" desc."
+
+<img src="../5. Databases and SQL for Data Science/images/order_by_desc.png">
+
+Another way of specifying the sort column is to indicate the column sequence number. For example, instead of specifying the column name pages, the number two is used:
+
+<img src="../5. Databases and SQL for Data Science/images/order_by_seq.png">
+
+<h3>Grouping Result Sets</h3>
+
+__Eliminating duplicates using DiSTINCT clause__
+
+<img src="../5. Databases and SQL for Data Science/images/select_distinct.png">
+
+__GROUP BY clause__
+
+<img src="../5. Databases and SQL for Data Science/images/group_by.png">
+
+The "as count" keyword assigns a column name to the result set.
+
+__Restricting the result set using HAVING clause__
+
+<img src="../5. Databases and SQL for Data Science/images/group_by_having.png">
+
+Note that the "where" clause is for the entire result set, but the "having" clause works only with the "group by" clause. 
+
+
+<h2>Functions, Sub-Queries, Multiple Tables</h2>
+
+
+<h3>Built-in Database Functions</h3>
+
+
+
+<h3>Date and Time Built-in Functions</h3>
+
+
+
+<h3>Sub-Queries and Nested Selects</h3>
+
+
+
+<h3>Working with Multiple Tables</h3>
+
+
+
+
+<h2>Relational Model Constraints</h2>
 
 
 

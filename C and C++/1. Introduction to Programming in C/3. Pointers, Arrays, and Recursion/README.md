@@ -204,19 +204,46 @@ We will consider all code with undefined behavior, such as this, to be erroneous
 
 
 
-<h2>Cryptography Motivation</h2>
-
-
-
 <h2>Array Basics</h2>
 
 
 <h3>Array Declaration and Initialization</h3>
 
+An _array_ is a sequence of items of the same type (e.g., an array of ints is a sequence of ints). When an array is created, the programmer specifies its size (i.e., the number of items in the sequence). If we wanted to declare an array of 4 ints called _myArray_, we would write:
 
+```c
+int myArray[4];
+```
+
+The variable name _myArray_ is a pointer to the 4 boxes that make up the array.
+
+<img src="../3. Pointers, Arrays, and Recursion/images/array1.png">
+
+Notice that there are 4 boxes (which are not yet initialized). As with other variables, we can initialize an array in the same line that we declare it. However, as the array holds multiple values, we write the initialization data inside of curly braces. For example, we might write:
+
+```c
+int myArray[4] = {4, 5, 6, 7};
+```
+
+If you write too few elements in the array, the compiler will fill the remaining ones in with 0. This behavior can be a useful feature for zero-initialing the entire array—we can write just a single 0 in the curly braces and the compiler will fill in as many zeros as there are elements of the array:
+
+```c
+int myArray[4] = {0};
+```
+
+Note that most compilers will also accept `int myArray [4] = {};`, however, _gcc_ will warn you for it if you compile with _-pedantic_, as its not strictly allowed by the language standard.
+
+If we provide an initializer, we can also omit the array size, and instead write empty square brackets—the compiler will count the elements of the initializer, and fill in the array size:
+
+```c
+int myArray[] = {4, 5, 6, 7};
+```
 
 <h3>Accessing an Array</h3>
 
+Accessing an array element using pointer arithmetic works fine, and sometimes is the natural way to access elements. However, sometimes we just want the _nth_ element of an array, and it would be cumbersome to declare a pointer, add _n_ to it, then dereference it. We can accomplish this goal more succinctly by indexing the array. When we index an array, we write the name of the array, followed by square brackets containing the number of the element we want to refer to: e.g., `myArray[3]`.
+
+We will note that accessing an array out of bounds (at any element that does not exist) is an error that the compiler cannot detect. If you write such code, your program will access some box, but you do not know what box it actually is.
 
 
 <h2>Arrays in Action</h2>
@@ -224,12 +251,25 @@ We will consider all code with undefined behavior, such as this, to be erroneous
 
 <h3>Passing Arrays as Parameters</h3>
 
+In general, when we want to pass an array as a parameter, we will want to pass a pointer to the array, as well as an integer specifying how many elements are in the array, such as this:
 
+```c
+int myFunction(int *myArray, int size) {
+    // whatever code ...
+}
+```
 
-<h3>Writing Code with Arrays</h3>
+There is no way to get the size of an array in C, other than passing along that information explicitly, and we often want to make functions which are generic in the size of the array they can operate on (i.e., we do not want to hard code a function to only work on an array of a particular size). If we wanted, we could make a struct which puts the array and its size together, as one piece of data—then pass that struct around.
 
+When we pass a pointer that actually points at an array, we can index it like an array (because it is an array—remember the name of an array variable is just a pointer), and perform pointer arithmetic on it.
 
+We can also pass an array as a parameter with the square bracket syntax:
 
+```c
+int myFunction(int myArray[], int size) {
+    // whatever code ...
+}
+```
 
 
 <h2>Array Caveats</h2>
@@ -237,11 +277,13 @@ We will consider all code with undefined behavior, such as this, to be erroneous
 
 <h3>Dangling Pointers</h3>
 
-
+When you write code with arrays, you may be tempted to return an array from a function (after all, it is natural to solve problems where an array is your answer). However, we must be careful, because the storage space for the arrays we have created in this chapter live in the stack frame, and thus are deallocated after the function returns. The value of the expression that names the array is just a pointer to that space, so all that gets copied to the calling function is an arrow pointing at something that no longer exists. Whenever you have a pointer to something whose memory has been deallocated, it is called a dangling pointer. Dereferencing a _dangling pointer_ results in undefined behavior (and thus represents a serious problem with your code) because you have no idea what values are at the end of the arrow.
 
 <h3>Array Size</h3>
 
+In C, the number of bits we would need to describe the size of the array and/or index varies from one platform to another—on a 32-bit platform (meaning memory addresses are 32 bits), we would want a 32-bit unsigned int; on a 64-bit platform we would want a 64 bit unsigned int. Fortunately, the designers of C realized this possibility, and decided to make a type name for “unsigned integers that describe the size of things”—*size_t*.
 
+Instead of writing a numerical constant that represents the size on one platform, you should let the C compiler calculate the size of a type for you with the __sizeof__ operator. The __sizeof__ operator takes one operand, which can either be a type name (e.g., __sizeof(double)__) or an expression (e.g., __sizeof(*p)__). If the operand is an expression, the compiler figures out the type of that expression (remember expressions have types), and evaluates the size of that type. In either case, __sizeof__ evaluates the number of bytes which the type requires. The type of this number of bytes is _size_t_.
 
 
 
