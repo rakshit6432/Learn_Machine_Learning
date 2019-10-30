@@ -393,7 +393,7 @@ __Restricting the result set using HAVING clause__
 
 <img src="../5. Databases and SQL for Data Science/images/group_by_having.png">
 
-Note that the "where" clause is for the entire result set, but the "having" clause works only with the "group by" clause. 
+Note that the "where" clause is for the entire result set, but the "having" clause works only with the "group by" clause.
 
 
 <h2>Functions, Sub-Queries, Multiple Tables</h2>
@@ -401,27 +401,207 @@ Note that the "where" clause is for the entire result set, but the "having" clau
 
 <h3>Built-in Database Functions</h3>
 
+__Aggregate functions__
 
+An aggregate function takes a collection of light values, such as all of the values in a column, as input, and returns a single value or null. Examples of aggregate functions include: sum, minimum, maximum and average.
+
+```sql
+-- Getting the sum of SALEPRICE
+select sum(SALEPRICE) as SUM_OF_SALEPRICE from PETSALE;
+
+-- Using max to get the max QUANTITY
+select max(QUANTITY) from PETSALE;
+
+-- Using min to get the min ID where ANIMAL is Dog
+select min(ID) from PETSALE where ANIMAL='Dog';
+
+-- Using Average for SALEPRICE
+select avg(SALEPRICE) from PETSALE;
+
+-- Performing mathematical operations and then using aggregate functions
+select avg(SALEPRICE / QUANTITY) from PETSALE where ANIMAL = 'Dog';
+```
+
+__Scalar and String functions__
+
+Scalar perform operations on every input value, for example ROUND(), LENGTH(), UCASE(), LCASE()
+
+```sql
+-- Round up or down every value in SALEPRICE
+select round(SALEPRICE) from PETSALE;
+
+-- Retrieve the length of each value in ANIMAL
+select length(ANIMAL) from PETSALE;
+
+-- Retrieve ANIMAL values in UPPERCASE;
+select ucase(ANIMAL) from PETSALE;
+
+-- Use the function in a where clause
+select * from PETSALE where lcase(ANIMAL) = 'cat';
+
+-- Use the DISTINCT() function to get unique values;
+select distinct(ucase(ANIMAL)) from PETSALE;
+```
 
 <h3>Date and Time Built-in Functions</h3>
 
+<img src='../5. Databases and SQL for Data Science/images/date_datatypes.png'>
 
+```sql
+-- Extract the DAY portion from a SALEDATE
+select day(SALEDATE) from PETSALE where ANIMAL='Cat';
+
+-- Get the number of sales during the month of May
+select count(*) from PETSALE where month(SALEDATE) = '05';
+
+-- What date is it 3 days after each sale date
+select (SALEDATE + 3 days) from PETSALE;
+
+-- Special Registers:
+-- CURRENT_DATE, CURRENT_TIME
+
+-- Find how many days have passed since each SALEDATE till now
+select (current_date - SALEDATE) from PETSALE;
+```
 
 <h3>Sub-Queries and Nested Selects</h3>
 
+Sub-queries or sub selects are like regular queries but placed within parentheses and nested inside another query. This allows you to form more powerful queries than would have been otherwise possible.
 
+```sql
+select COLUMN1 from TABLE
+    where COLUMN2 = (select max(COLUMN2) from TABLE));
+```
+
+_Why use sub queries?_
+
+For example, if we want to retrieve the list of employees who earn more than the average salary:
+
+```sql
+select * from employees where salary > avg(salary);
+```
+
+The above query will result in an error, indicating an invalid use of the aggregate function. One of the limitations of built in aggregate functions like the average function, is that they cannot always be evaluated in the WHERE clause. So to evaluate a function like average in the WHERE clause:
+
+```sql
+select * from employees where salary > (select avg(salary) from employees);
+```
+
+The sub-select doesn't just have to go in the WHERE clause. It can also go in other parts of the query such as in the list of columns to be selected.
+
+```sql
+select emp_id, salary, avg(salary) as avg_salary from employees;
+```
+
+Running this query will result in an error indicating that no group by clause is specified. We can circumvent this error by using the average function in a sub-query placed in the list of the columns.
+
+```sql
+select emp_id, salary,
+    (select avg(salary) as avg_salary from employees) from employees;
+```
+
+Another option is to make the sub-query be part of the FROM clause. Sub-queries like these are sometimes called derived tables or table expressions. Because the outer query uses the results of the sub-query as a data source.
+
+```sql
+select * from
+    (select emp_id, f_name, l_name, dep_id from employees) as emp4all;
+```
 
 <h3>Working with Multiple Tables</h3>
 
+There are several ways to access multiple tables in the same query. Namely:
+- using Sub-queries,
+- Implicit JOIN, and
+- JOIN operators, such as INNER JOIN and OUTER JOIN.
 
+__Accessing multiple tables with sub-queries:__
+
+To retrieve only the employee records that correspond to departments in the departments table:
+
+```sql
+select * from employees
+    where dep_id in
+    (select dept_id_dep from department);
+```
+
+To retrieve only the list of employees from a specific location:
+- Employees table doesn't contain location information
+- Need to get location info from departments table
+
+```sql
+select * from employees
+    where dep_id in
+    (select dept_id_dep from departments
+        where loc_id='L0002');
+```
+
+To retrieve the department id and name for employees who earn more than $70,000:
+
+```sql
+select dept_id_dep, dep_name from departments
+    where dept_id_dep in
+    (select dep_id from employees where salary > 70000);
+```
+
+__Accessing multiple tables with Implicit Join__
+
+```sql
+select * from employees, departments;
+```
+
+The above code results in a full join or Cartesian join, because every row in the first table is joined with every row in the second table. If you examine the results set, you will see more rows than in both tables individually. We can use additional operands to limit the result set.
+
+```sql
+select * from employees E, departments D
+    where E.dep_id = D.dept_id_dep;
+```
+
+To see the department name for each employee:
+
+```sql
+select employees.emp_id, departments.dept_name
+    from employees E, departments D
+    where E.dep_id = D.dept_id_dep;
+```
 
 
 <h2>Relational Model Constraints</h2>
 
 
+<img src='../5. Databases and SQL for Data Science/images/referencing.png'>
+
+In the figure above, at least one author writes one book. This is a one to one relationship. To look up the author information, the book entity refers to the author entity. In a relational data model, this is called _referencing_. In relational databases, this establishes the data integrity between two relations.
+
+A __primary key__ of a relational table uniquely identifies each row in a table. A __foreign key__ is a set of columns referring to a primary key of another table.
+
+A table containing a primary key that is related to at least one foreign key is called a __parent table__. A table containing one or more foreign keys is called a __dependent table__. It might also be referred to as a __child table__.
 
 
+<h3>Relational Model Constraints - Advanced</h3>
 
+Within any business, data must often adhere to certain restrictions or rules. Constraints help implement the business rules. In a relational data model, data integrity can be achieved using integrity rules or constraints. The following six constraints are defined in a relational database model:
+
+- _Entity Integrity Constraint_: This constraint prevents duplicate values in a table. To implement these constraints, indexes are used. The entity integrity constraint states that no attribute participating in the primary key of a relation is allowed to accept null values.
+
+- _Referential Integrity Constraint_: defines relationships between tables and ensures that these relationships remain valid. The validity of the data is enforced using a combination of primary keys and foreign keys. As mentioned previously, for a book to exist, it has to be written by at least one author.
+
+- _Semantic Integrity Constraint_: refers to the correctness of the meaning of the data. For example, in the relation author, if the attribute or column city contains a garbage value instead of Toronto, the garbage value does not have any meaning. The semantic integrity constraint is related to the correctness of the data.
+
+- _Domain Constraint_: specifies the permissible values for a given attribute. For example, in the relation author, the attribute country must contain a two letter country code.
+
+- _Null Constraint_: specifies that attribute values cannot be null.
+
+- _Check Constraint_: enforces domain integrity by limiting the values that are accepted by an attribute.
+
+<h3>Additional Information</h3>
+
+__Primary Keys:__
+
+If a relation schema has more than one key, then each key is called a candidate key. One of the candidate keys is designated as the primary key, and the others are called secondary keys.
+
+__Semantic Constraints:__
+
+Semantic Constraints are constraints that cannot be directly expressed in the schemas of the data model. Semantic constraints are also called application-based rules or business rules. They are additional rules specified by users or database administrators. For example, a class can have a maximum of 30 students; salary of an employee cannot exceed the salary of the employee’s manager.
 
 
 

@@ -123,8 +123,26 @@ and is known as the $L^2$ _norm_ of the function $f$ over the interval $[a, b]$.
 
 
 
+<h2>Projections</h2>
 
 
+<h3>Projection onto 1D subspaces</h3>
+
+<img src="../3. Principal Component Analysis/images/projection_1d.png">
+
+<h3>Projections onto higher-dimensional subspaces</h3>
+
+<img src="../3. Principal Component Analysis/images/projection_k_d.png">
+
+<h3>Orthogonal Projections onto Higher-Dimensional Subspaces</h3>
+
+<img src="../3. Principal Component Analysis/images/projection_notes_fig.png">
+
+<img src="../3. Principal Component Analysis/images/projection_notes_a.png">
+
+<img src="../3. Principal Component Analysis/images/projection_notes_b.png">
+
+<img src="../3. Principal Component Analysis/images/projection_notes_c.png">
 
 
 
