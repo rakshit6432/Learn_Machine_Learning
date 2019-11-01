@@ -609,8 +609,139 @@ Semantic Constraints are constraints that cannot be directly expressed in the sc
 
 
 
+<h2>Accessing databases using Python</h2>
 
 
+<h3>How to access databases using Python?</h3>
+
+A notebook interface is a virtual notebook environment used for programming. Examples of notebook interfaces include the mathematical notebook, maple worksheet, matlab notebook, IPython Jupyter, R Markdown, Apache Zeppelin, Apache Spark notebook and the Databricks cloud.
+
+__SQL API__
+
+The SQL API consists of library function calls as an application programming interface, API, for the DBMS. To pass SQL statements to the DBMS, an application program calls functions in the API, and it calls other functions to retrieve query results and status information from the DBMS.
+
+<img src="../5. Databases and SQL for Data Science/images/sql_api.png">
+
+Each database system has its own library. The table below shows a list of a few applications and corresponding SQL APIs.
+
+<img src="../5. Databases and SQL for Data Science/images/sql_api_usage.png">
+
+<h3>Writing code using DB-API</h3>
+
+DB-API is Python's standard API for accessing relational databases. It is a standard that allows you to write a single program that works with multiple kinds of relational databases instead of writing a separate program for each one. So, if you learn the DB-API functions, then you can apply that knowledge to use any database with Python.
+
+The two main concepts in the Python DB-API are:
+
+- __Connection objects__: You use connection objects to connect to a database and manage your transactions.
+    - Database connections
+    - Manage transactions
+
+    _Connection Methods:_
+    - cursor() - returns a new cursor object using the connection.
+    - commit() - is used to commit any pending transaction to the database.
+    - rollback() - causes the database to roll back to the start of any pending transaction.
+    - close() - is used to close a database connection.
+
+- __Cursor objects__: Cursor objects are used to run queries. The cursor works similar to a cursor in a text processing system where you scroll down in your result set and get your data into the application. Cursors are used to scan through the results of a database.
+    - Database queries
+
+    _Cursor Methods:_
+    - callproc()
+    - execute()
+    - executemany()
+    - fetchone()
+    - fetchmany()
+    - fetchall()
+    - nextset()
+    - Arraysize()
+    - close()
+
+    Cursors created from the same connection are not isolated i.e. any changes done to the database by a cursor are immediately visible by the other cursors. Cursors created from different connections can or cannot be isolated depending on how the transaction support is implemented.
+
+    A database cursor is a control structure that enables traversal over the records in a database. It behaves like a file name or file handle in a programming language.
+
+    <img src="../5. Databases and SQL for Data Science/images/db_cursor.png">
+
+__Writing code using DB-API__
+
+```python
+from dbmodule import connect
+
+# Create connection object
+Connection = connect(
+    'databasename', 'username', 'pswd'
+)
+
+# Create cursor object
+Cursor = connection.cursor()
+
+# Run Queries
+Cursor.execute('select * from mytable')
+Results = Cursor.fetchall()
+
+# Free resources
+Cursor.close()
+Connection.close()
+```
+
+<h3>Connecting to a database using ibm_db API</h3>
+
+The ibm_db API provides a variety of useful Python functions for accessing and manipulating data in an IBM data server database, including functions for connecting to a database, repairing and issuing sequel statements, fetching rows from result sets, calling stored procedures, committing and rolling back transactions, handling errors and retrieving metadata.
+
+The ibm_db API uses the IBM Data Server Driver for ODBC, and CLI APIs to connect to IBM, DB2, and Informix.
+
+__Importing ibm_db API__
+
+```python
+import ibm_db
+```
+
+Connecting to the DB2 warehouse requires the following information:
+
+<img src="../5. Databases and SQL for Data Science/images/ibm_db_connection.png">
+
+Below is an example of creating a DB2 warehouse database connection in python:
+
+<img src="../5. Databases and SQL for Data Science/images/ibm_db_example.png">
+
+You can then close the database by closing all the connections:
+
+```python
+ibm_db.close(conn)
+```
+
+<h3>Creating tables, loading data and querying data</h3>
+
+There are different ways of creating tables in DB2 Warehouse. One is using the Web console provided by DB2 Warehouse, and the other option is to create tables from any SQL, R, or Python environments.
+
+__Creating Tables__
+
+To create a table, we use the `ibm_db.exec_immediate` function. The parameters for the function are:
+
+- Connection: is a valid database connection resource that is returned from the `ibm_dbconnect` or `ibm_dbpconnect` function.
+
+- Statement: is a string that contains the sequel statement.
+
+- Options: is an optional parameter that includes a dictionary that specifies the type of cursor to return for results sets.
+
+Below is the code to create a table called trucks in Python:
+
+<img src="../5. Databases and SQL for Data Science/images/create_table.png">
+
+Python code to insert data into the table:
+
+<img src="../5. Databases and SQL for Data Science/images/insert_data.png">
+
+Python code to query data:
+
+<img src="../5. Databases and SQL for Data Science/images/query_data.png">
+
+Using pandas to retrieve data from the database tables:
+
+<img src="../5. Databases and SQL for Data Science/images/read_sql.png">
+
+
+<h2>Using JOIN operations to work with multiple tables</h2>
 
 
 
