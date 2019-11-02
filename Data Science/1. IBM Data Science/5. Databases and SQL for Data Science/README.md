@@ -744,6 +744,51 @@ Using pandas to retrieve data from the database tables:
 <h2>Using JOIN operations to work with multiple tables</h2>
 
 
+<h3>Join Overview</h3>
+
+To combine data from two tables, we use the JOIN operator. A JOIN combines the rows from two or more tables based on a relationship between certain columns in these tables.
+
+<h3>Inner Join Overview</h3>
+
+There are two types of table joins: _inner join_ and _outer join_. The most common type of join is the inner join. An inner join matches the results from two tables and displays only the result set that matches the criteria specified in the query. An inner join returns only the rows that match.
+
+For example,
+
+```sql
+select b.borrower_id, b.lastname, b.country, l.borrower_id, l.loan_date
+from borrower b inner join loan l
+on b.borrower_id = l.borrower_id;
+```
+
+If you want to join multiple tables:
+
+```sql
+select b.lastname, l.copy_id, c.status
+from borrower b
+    inner join loan lo on b.borrower_id = l.borrower_id
+    inner join copy c on l.copy_id = c.copy_id;
+```
+
+<h3>Left Outer Join Overview</h3>
+
+An Outer Join is a specialized form of joint and there are three types of Outer Joins: _Left Outer Join_, _Right Outer Join_ and _Full Outer Join_.
+
+A left outer join or _left join_ matches the results from two tables and displays all the rows from the left table, and combines the information with rows from the right table that match the criteria specified in the query.
+
+<img src="../5. Databases and SQL for Data Science/images/left_join.png">
+
+<h3>Right Outer Join Overview</h3>
+
+A right join matches the results from two tables and displays all the rows from the right table and combines the information with rows from the left table that matched the criteria specified in the query.
+
+<img src="../5. Databases and SQL for Data Science/images/right_join.png">
+
+<h3>Full Outer Join Overview</h3>
+
+The full join keyword returns all rows from both tables. That is all rows from the left table and all rows from the right table. So, the full join could return a very large result set.
+
+<img src="../5. Databases and SQL for Data Science/images/full_join.png">
+
 
 
 <h1>Week 4: Course Assignment</h1>
