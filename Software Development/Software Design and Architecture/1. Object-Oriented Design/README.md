@@ -648,6 +648,144 @@ A single implementation for multiple interfaces with overlapping contracts is ac
 
 
 
+<h2>Design Principles</h2>
+
+
+<h3>Coupling and Cohesion</h3>
+
+Since design complexity applies to both classes and the methods within them, we will use the term module to refer to any sort of program unit like these. The metrics you will use to evaluate design complexity are coupling and cohesion.
+
+__Coupling__ focuses on complexity between a module and other modules.
+
+If your module is highly reliant on other modules, you would say this module is tightly coupled to others. On the other hand, if your module finds it easy to connect to other modules, this module is loosely coupled to others. You want coupling for your module to be loose or low, not tight.
+
+When evaluating the coupling of a module, you need to consider
+
+- _Degree_: is the number of connections between the module and others. With coupling, you want to keep the degree small.
+
+- _Ease_: is how obvious are the connections between the module and others. With coupling, you want the connections to be easy to make without needing to understand the implementations of the other modules.
+
+- _Flexibility_: is how interchangeable the other modules are for this module. With coupling, you want the other modules easily replaceable for something better in the future.
+
+__Cohesion__ focuses on complexity within a module.
+
+It represents the clarity and the responsibilities of a module. If your module performs one task and nothing else or has a clear purpose, your module has high cohesion. On the other hand, if your module tries to encapsulate more than one purpose or has an unclear purpose, your module has low cohesion. You want high cohesion.
+
+Let's look at an example for coupling and cohesion in Java. Suppose we have a class called sensor that has two purposes, getting humidity and getting temperature sensor readings:
+
+```java
+public void get (int controlFlag) {
+    switch (controlFlag) {
+        case 0:
+            return this.humidity;
+            break
+        case 1:
+            return this.temperature;
+            break;
+        default:
+            throw new UnknownControlFlagException();
+    }
+}
+```
+
+Here we have a get method that takes a zero flag if you wanted to return the humidity value, and takes the one flag if you want it to return the temperature value. Since the sensor class doesn't have a clear single purpose, it suffers from low cohesion and the get method is not straightforward since what controlFlag means is unclear so you will have to open up Sensor to see how it works, this lack of ease makes the get method harder to use and in turn makes it tightly coupled. A better design would be:
+
+<img src="../1. Object-Oriented Design/images/coupling.png">
+
+In general, there's a balance to be made between low coupling and high cohesion in your designs. For a complex system, the complexity can be distributed to between the modules or within the modules. As modules are simplified to achieve high cohesion, they may need to depend more on other modules thus increasing coupling. As connections between modules are simplified to achieve low coupling, the modules may need to take on more responsibilities thus lowering cohesion. You now have the skills to evaluate your systems design complexity using coupling and cohesion.
+
+<h3>Separation of Concerns</h3>
+
+A concern is a very general notion, basically it is anything that matters in providing a solution to a problem. Each concern poses unique sub-problems. A software system solves a problem using separation of concerns. We need to be organized, so that we can think about and address these concerns effectively. Separation of concerns, is a key idea that applies throughout object oriented modelling and programming. The concerns that matter are addressed separately when applying the design principles of abstraction, encapsulation, decomposition, and generalization.
+
+Each concept in the problem space leads to a separate abstraction with its own relevant attributes and behaviors. These attributes and behaviors are encapsulated into their own section of code called a class. The view of a class by the rest of the system and its implementation are separated. So that the details of implementation can change, while the view through an interface can stay the same. A whole class can also be decomposed into multiple classes. We may recognize commonalities among classes, which are then separated and generalized into a super class. Separation of concerns is an ongoing process throughout the design process.
+
+<h3>Information Hiding</h3>
+
+Information hiding allows modules of our system to give others the minimum amount of information needed to use them correctly and hide everything else. Information hiding allows a developer to work on a module separately with other developers needing to know the implementation details of this module. They can only use this module through its interface. In general things that might change, like implementation details, should be hidden. And things that should not change, like assumptions, are revealed through interfaces.
+
+Information hiding is often associated with encapsulation. We use encapsulation to bundle attributes and behaviors into their appropriate class, and expose an interface to provide access. You can hide information through the use of access modifiers. Access modifiers change which classes are able to access attributes and behaviors. They also determine which attribute and behaviors a superclass will share with its subclasses.
+
+There are four different levels of access in Java:
+
+- __Public__: _Attributes_ with a public access modifier are accessible by any class in your system. This means that other classes can retrieve and modify the attribute. Public _methods_ are also accessible by any class in your system. But this access does not allow other classes to change the implementation of the behavior for the method. A publicly accessible methods simply allows other classes to call the method and receive any output from it.
+
+- __Protected__: behaviors and attributes are not accessible to every class in the system. They are only available to the encapsulating class itself, all subclasses, and classes within the same package.
+
+- __Default__: access modifier will only allow access to attributes and methods to subclasses and to the encapsulating class. This access modifier is also called the _no modifier_ access because you do not need to explicitly declare it.
+
+- __Private__: attributes and methods are not accessible by any class other than by the encapsulating class itself. This means these attributes cannot be accessed directly and these methods cannot be invoked by any other classes.
+
+<img src="../1. Object-Oriented Design/images/access_levels.png">
+
+<h3>Conceptual Integrity</h3>
+
+Conceptual integrity is about creating consistent software. It's making decisions about how your system will be designed and implemented, so that even if multiple people worked on the software, it would seem as if there was only one mind guiding all the work. It's about everyone agreeing to use certain design principles and conventions.
+
+There are multiple ways to achieve conceptual integrity:
+
+- Communication: Adopting certain agile development practices like daily stand-up meetings and sprint retrospectives can help to maintain the consistency of the code.
+
+- Code reviews.
+
+- Using certain design principles and programming constructs.
+
+- Having a well defined design or architecture underlying your software. While software design is typically associated with guiding the internal design of software running as a single process, software architecture describes how software, running as multiple processes, work together, and how they relate to each other.
+
+- Unifying concepts: it is taking seemingly different things and finding common ground so that each concepts can be seen and treated in similar ways.
+
+- Having a small core group that accepts commits to the code base.
+
+<img src="../1. Object-Oriented Design/images/conceptual_integrity.png">
+
+
+<h2>Generalization Principles</h2>
+
+
+<h3>Inheritance Issues</h3>
+
+Generalization and inheritance are some of the more difficult topics to master in object-oriented programming and modeling. How do we know if we're abusing inheritance?
+
+First, you need to ask yourself, am I using inheritance to simply share attributes or behavior without further adding anything special in my subclasses? If the answer is yes, then you're misusing inheritance. This is an indication of misuse, because there is no point for the subclasses to exists since the superclass already is enough.
+
+The second indication of improper use of generalization is, if you break the Liskov Substitution Principle. The principle states that a subclass can replace a superclass, if and only if, the subclass does not change the functionality of the superclass.
+
+
+<h2>Modelling Behavior</h2>
+
+
+<h3>UML Sequence Diagram</h3>
+
+A sequence diagram describes how objects in your system interact to complete a specific task.
+
+When creating sequence diagrams, first you use a box to represent role played by an object. The role is typically labeled by the name of the class for the object.
+
+<img src="../1. Object-Oriented Design/images/sequence_diagram.png">
+
+Second, you use vertical dotted lines, known as lifelines, to represent an object as time passes by.
+
+<img src="../1. Object-Oriented Design/images/sequence_diagram_b.png">
+
+Finally, you use arrows to show messages that are sent from one object to another.
+
+<img src="../1. Object-Oriented Design/images/sequence_diagram_c.png">
+
+For example:
+
+<img src="../1. Object-Oriented Design/images/sequence_diagram_example.png">
+
+Adding loops and conditionals to the sequence diagram:
+
+<img src="../1. Object-Oriented Design/images/sequence_diagram_alt.png">
+
+Sequence diagrams are commonly used as a planning tool before the development team starts programming, or to show others how a system is designed.
+
+<h3>UML State Diagram</h3>
+
+
+
+
+<h2>Model Checking</h2>
 
 
 
