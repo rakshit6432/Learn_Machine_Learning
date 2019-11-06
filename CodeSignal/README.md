@@ -4,8 +4,9 @@
 
 <h2>Arrays</h2>
 
-
-
+1. firstDuplicate
+2. firstNotRepeatingCharacter
+3. rotateImage
 
 <h2>Linked Lists</h2>
 
