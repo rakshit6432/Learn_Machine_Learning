@@ -354,6 +354,262 @@ There are three methods that we can use to get a sense of are we on track or not
 
 
 
+<h2>Scrum Overview</h2>
+
+
+Scrum works on this one to four week sprint where you take part of your product, and you define your design, your build, and your test. And then you get product feedback from the stakeholders and then repeat the cycle again and again.
+
+There are three roles that are defined in Scrum:
+
+- __Product Owner__:
+    - Define what needs to be done and in what order.
+
+- __Scrum Master__:
+    - Help the team stay true to the Scrum values and principles.
+    - Facilitate most of the meetings in the team.
+    - Drive resolution for some of the roadblocks.
+
+- __The Team__:
+    - Self organizing and they do the building of the software
+
+__Steps in a Scrum Framework:__
+
+1. Product owner gets input from customers, users and stakeholders and creates a _Product Backlog_ with user prioritized stories.
+
+2. The team gets together for a _Sprint Planning Meeting_ and pick the top stories to work on.
+
+    a. The product owner reviews those stories with the team and answer any questions
+
+3. The team gets together again and tasks the user stories - _Sprint Backlog_
+
+4. The team commits to the stories.
+
+5. Start Sprint
+
+    a. Get together for daily standup
+
+6. Finish Sprint
+
+    a. _Sprint Review_: reviews the work done with the stake holders and clients.
+
+    b. _Sprint Retrospectives_: talk about how we can optimize the process.
+
+To keep track of the sprint and the goals the team uses a _burn down_ or a _burn up_ chart
+
+<img src="../2. Agile Software Development/images/scrum_framework.png">
+
+
+<h2>Sprint Planning and Tracking</h2>
+
+
+<h3>Sprint Planning</h3>
+
+Before you do the sprint planning, you need to do some prep work called __Backlog Grooming__:
+
+- Removing user stories that no longer appear relevant.
+- Creating new user stories in response to newly discovered needs.
+- Re-assessing the relative priority of stories.
+- Assigning estimates to stories which have yet to receive one.
+- Correcting estimates in light of newly discovered information.
+- Splitting user stories which are high priority but too coarse grained to fit in an upcoming sprint.
+
+Once the Backlog is upto date, the next process is __selecting and preparing stories__:
+
+- Use the story map
+- Use your prioritized backlog and just start from the top picking stories based on your velocity
+
+Once the story is selected make sure the stories are ready to be worked upon (who, what, why, acceptance test, any major dependencies).
+
+Once the preparation is done, you can start __sprint planning__. There are two ways you can do this:
+
+- One step: Select one story at a time, task it out until capacity is reached
+
+- Two step:
+    - Select stories based on velocity
+    - Task out and gain confidence
+
+__Steps for sprint planning__
+
+1. Determine sprint capacity:
+
+    <img src="../2. Agile Software Development/images/determine_capacity.png">
+
+2. Review and Define Sprint goal (if any)
+
+3. Review potential stories
+
+4. Acquire confidence: design discussion and task out stories
+
+5. Refine sprint goals if required.
+
+6. Make commitment
+
+7. Put the stories and tasks on the task wall.
+
+<h3>Sprint Tracking</h3>
+
+There are three methods of Sprint Tracking:
+
+- __Burn down__: work left
+
+    <img src="../2. Agile Software Development/images/burn_down.png">
+
+- __Burn Up__: work done + total work
+
+    <img src="../2. Agile Software Development/images/burn_up.png">
+
+- __Task board__:
+
+    <img src="../2. Agile Software Development/images/task_board.png">
+
+
+<h2>Sprint Review, Retrospective and Sprint Execution</h2>
+
+
+<h3>Sprint Execution and Daily Standups</h3>
+
+__Sprint Execution__
+
+- Let the developers pick the stories rather than assigning them
+- Limit the work in progress
+- Parallel work vs Swarming
+- Generalists vs Specialists
+- Discipline: Make sure to follow what the team decides to do
+- Following Engineering practices
+
+__Daily Standup__
+
+- What?
+    - Common: Three questions- What did I do yesterday? What I'm going to do today? And are there any road blocks?
+    - Alternatives: Devs talk about stories from priority order (story focused standup)
+
+- Who?
+    - Core Team + any stakeholder who wants to attend
+
+- Purpose?
+    - Daily team planning
+    - COllaborate
+    - Identify blockers
+    - This isn't really a status check meeting
+
+- Tips
+    - Show the story board
+    - Keep it short
+
+<h3>Sprint Review</h3>
+
+- Purpose:
+    - Review work done and learning from the sprint
+    - Get feedback and adjust future direction
+    - Celebrate
+
+- Who?
+    - Core team
+    - Stakeholder
+    - Anybody and Everybody
+
+- How long?
+    - 1-2 hrs
+
+- What happens?
+    - Summarize everything that happened, your planning, what you did and roadblocks
+    - Demo the work
+    - Discuss the sprint with stakeholders and get feedback
+    - Adapt a future direction of your product if needed
+
+<h3>Sprint Retrospective</h3>
+
+- Who?
+    - Core Team
+
+- When?
+    - At the end of each sprint iteration
+
+- Purpose?
+    - Continuous Improvement
+
+- What happens?
+    - What's working?
+    - What's not working?
+    - Action Items?
+
+You can also do an alternative focused retro for any stories that's not finishing:
+
+- Steps:
+    - Set the atmosphere
+    - Share context
+    - Identify Insights
+    - Determine Actions
+    - Close the retrospective
+
+- Follow through
+
 
 
 <h1>Week 4: XP</h1>
+
+
+
+<h2>XP</h2>
+
+
+<h3>XP Overview</h3>
+
+XP stands for eXtreme Programming. extreme because it takes the good practices to extreme. For example if code review is good, why not pair developers together from the beginning and let them provide constant feedback rather than just doing code reviews at the end.
+
+In concrete terms, XP defines a set of values, principles, and practices. Now, since it took everything to an extreme, it ran into some controversies. One XP is prescriptive compared to many of the other lightweight agile practices, like Scrum, two pair programming, and a lot of industries say that this is too much, similarly about incremental design, three scalability of XP method, it cannot scale to bigger teams and it's okay for small to medium-sized company.
+
+<h3>XP Values</h3>
+
+Five values behind the XP practices and methods:
+
+- Simplicity: Maximizing value by doing only what is necessary.
+- Communication: Face to face daily and work together on everything from requirement to code.
+- Courage: Tell truth about progress, adapt to change and don't document failure because we will change.
+- Feedback: Generate as much feedback as a team can handle to iterate and improve.
+- Respect: each other.
+
+<h3>XP Practices</h3>
+
+- Do practices while keeping their purpose in mind.
+- Keep making progress towards ideal state in mind.
+- Experiment
+- Practices work well together.
+- Primary and Corollary practices.
+
+__Primary Practices:__
+
+- Sit together: open and highly collaborative working environment.
+- Whole team: Team composition is Dynamic and you have everyone you need for a project and no fractional people.
+- Informative workspace: Dynamic information and set up workspace so it can help anyone get an idea on the project
+- Energized work: working hours, incremental improvement and rest.
+- Pair programming.
+
+__Corollary Practices:__
+
+- Stories: Are flexible, estimated early, unit of functionality where development resolves and keep them visible.
+- Weekly Cycle: plan weekly, review progress, select week's worth work and break stories into tasks. Gradually reduce planning time.
+- Quarterly cycle: plan work quarter at a time, focus on the big picture, plan the themes for the quarter.
+- Slack: build some slack time into the process by adding some low priority tasks that can be skipped or 20% personal time and avoid aggressive commitments.
+- Ten minute build: build and run all the test within  10 minutes.
+- Continuous integration: synchronous and asynchronous integration
+- Test first programming.
+- Incremental design: invest little time in design everyday, refactor and architecture emerges over time.
+
+<h3>XP Process Model</h3>
+
+<img src="../2. Agile Software Development/images/xp_process.png">
+
+<h3>Scrum vs XP</h3>
+
+__Differences Between Scrum and Extreme Programming__
+
+There are four main differences between Scrum and XP:
+
+1. Scrum teams typically work in iterations (called sprints) that are from two weeks to one month long. XP teams typically work in iterations that are one or two weeks long.
+
+2. Scrum teams do not allow changes into their sprints. XP teams are much more amenable to change within their iterations. As long as the team hasn’t started work on a particular feature, a new feature of equivalent size can be swapped into the XP team’s iteration in exchange for the unstarted feature.
+
+3. Extreme Programming teams work in a strict priority order.  By contrast, the Scrum product owner prioritizes the product backlog but the team determines the sequence in which they will develop the backlog items.
+
+4. Scrum doesn’t prescribe any engineering practices; XP does. For example engineering practices like test-driven development, automated testing, pair programming, simple design, refactoring and so on.

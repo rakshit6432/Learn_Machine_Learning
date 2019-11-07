@@ -7,6 +7,7 @@
 1. firstDuplicate
 2. firstNotRepeatingCharacter
 3. rotateImage
+4. sudoku2
 
 <h2>Linked Lists</h2>
 
