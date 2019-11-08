@@ -291,6 +291,120 @@ Instead of writing a numerical constant that represents the size on one platform
 
 
 
+<h2>Strings</h2>
+
+
+<h3>String Literals</h3>
+
+If we wanted to have a variable which points to a string literal, we might write:
+
+```c
+const char * str = "Hello World\n";
+```
+
+This code declares and initializes variable _str_:
+
+<img src="../3. Pointers, Arrays, and Recursion/images/str.png">
+
+_str_ is a pointer, pointing at an array of characters. These characters appear in the order of the string, and are followed by the null terminator character, __'\0'__.
+
+Notice that we used __const__ indicating that we cannot modify the characters pointed to by str (that is, assignment to _str[i]_ will result in a compiler error). If we forget the __const__ modifier, unfortunately, the code will still compile (we can receive a warning for this type of mistake with _-Wwrite-strings_, which is not enabled by default with _-Wall_. However, if we omit __const__ and try to modify the string, the program will crash with a _segmentation fault_.
+
+The reason the program will crash if you attempt to modify a string literal is that the data for the string literal is stored into a read only portion of the static data section.
+
+<img src="../3. Pointers, Arrays, and Recursion/images/str_memory.png">
+
+<h3>Mutable Strings</h3>
+
+When we want to modify a string, we need the string to reside in writeable memory, such as the frame of a function or memory that is dynamically allocated by _malloc_. One way we can declare and initialize our array of characters is like this:
+
+```c
+char str[] = "Hello World\n";
+```
+
+This code behaves exactly as if we wrote:
+
+```c
+char str[] = {'H', 'e', 'l', 'l', 'o', ' ',
+              'W', 'o', 'r', 'l'  'd', '\n', '\0'};
+```
+
+The figure shows the difference between a string declared as a pointer to a literal and as an array, initialized by a literal:
+
+<img src="../3. Pointers, Arrays, and Recursion/images/str_array.png">
+
+<h3>String Equality</h3>
+
+<img src="../3. Pointers, Arrays, and Recursion/images/str_equality.png">
+
+_strcmp_ from string.h is used to compare strings. _strcmp_ returns a positive number if the first string is “greater than” the second string and a negative number if the first string is “less than” the second string. Here “greater than” and “less than” refer to lexicographic order. This is case sensitive but there is another function, _strcasecmp_ which performs case-insensitive comparison.
+
+<h3>String Copying</h3>
+
+_strncpy_ copies a string from one location to another, and takes a parameter (n) telling it the maximum number of characters it is allowed to copy. If the length of the source string is greater than or equal to n, then the destination is not null terminated.
+
+Note that there is a similarly named function, _strcpy_, this function is more dangerous, as there is no way to tell it how much space is available in the destination. If insufficient space is available, then _strcpy_ will simply overwrite whatever follows it in memory, creating a variety of problems.
+
+There is another function, _strdup_ which allocates space for a copy of the string, and copies it into that space. However, to understand how _strdup_ works, we need to discuss dynamic allocation
+
+<h3>Converting Strings to ints</h3>
+
+One important thing to remember when using strings is that they cannot be implicitly converted to integers (or floating point types) by casting—either implicit or explicit.
+
+Another incorrect (at least for this task) approach would be to write `x = *str`, dereferencing str to get the value at the end of the arrow, rather than the pointer itself. Here, we would read one character out of the string (`*str` evaluates to '1', which is 0x31). We would then assign this value (0x31) to x. Now, we would end up with x being 0x31 (which is 49 in decimal)—also not what we desire!
+
+The _atoi_ function is the simplest of these—it converts a string to an integer by interpreting the sequence of characters as a decimal number.
+
+A slightly more complex function is _strtol_, which lets you specify the base (decimal, hexadecimal, etc…), as well as to pass in the address of a __char *__ which it will fill in with a pointer to the first character after the number.
+
+
+<h2>Multidimensional Arrays</h2>
+
+
+<h3>Introduction</h3>
+
+
+
+<h3>Declaration</h3>
+
+
+
+<h3>Indexing</h3>
+
+
+
+<h3>Initializing</h3>
+
+
+
+<h3>Array of Pointers</h3>
+
+
+<h3>Incompatibility</h3>
+
+
+
+<h3>Array of Strings</h3>
+
+
+
+<h2>Function Pointers</h2>
+
+
+<h3>Function Pointer Basics</h3>
+
+
+
+<h3>Sorting Functions</h3>
+
+
+
+
+<h2>Security Hazards</h2>
+
+
+<h3>Format String Attacks</h3>
+
 
 
 

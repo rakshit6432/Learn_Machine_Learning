@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as it
 
 
 def calculateDuplicate(listNum):
@@ -9,28 +10,24 @@ def calculateDuplicate(listNum):
 def sudoku2(grid):
     duplicateTotal = []
 
-    # Checking horizontal duplicate
-    for i in grid:
-        duplicateTotal.extend(calculateDuplicate(i))
+    # Transform grid to horizontal
+    transformedGrid = (np.asarray(grid).T).tolist()
 
-    # Checking vertical duplicate only if horizontal test passess
-    if sum(duplicateTotal) == 0:
-        transformedGrid = (np.asarray(grid).T).tolist()
-        for k in transformedGrid:
-            duplicateTotal.extend(calculateDuplicate(k))
+    # Checking for duplicates in horizontal and vertical lists
+    for nums in it.chain(grid, transformedGrid):
+        duplicateTotal.extend(calculateDuplicate(nums))
+        if sum(duplicateTotal) > 1: break  # noqa E701
 
     # Checking diagonal duplicate only if horizontal & vertical test passess
     if sum(duplicateTotal) == 0:
+        x1, x2 = range(3), range(3)
         diagonal = np.dsplit(np.asarray(grid).reshape(3, 3, 9), 3)
-        for m in range(3):
-            for n in range(3):
-                blank = []
-                for o in range(3):
-                    blank.extend(diagonal[m][n][o].flatten())
-                duplicateTotal.extend(calculateDuplicate(blank))
+        for m, n in it.product(x1, x2):
+            blank = []
+            for o in range(3):
+                blank.extend(diagonal[m][n][o].flatten())
+            duplicateTotal.extend(calculateDuplicate(blank))
+            if sum(duplicateTotal) > 1: break   # noqa E701
 
-    # Check diagonal test
-    if sum(duplicateTotal) == 0:
-        return True
-    else:
-        return False
+    # Final Check
+    return True if sum(duplicateTotal) == 0 else False
