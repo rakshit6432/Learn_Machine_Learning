@@ -782,7 +782,21 @@ Sequence diagrams are commonly used as a planning tool before the development te
 
 <h3>UML State Diagram</h3>
 
+A state diagram is a technique that you can use to describe how your system behaves and responds. The state diagram follows the states of a system or object, and shows changes between the states as events occur.
 
+A state diagram illustrates object behavior by depicting the changing states of an object. These states change and respond to different events. A state is the way an object exists at a particular point in time. The state of an object is determined by the values of its attributes.
+
+Each state has three important sections:
+- _State name_: the name of the state
+
+- _State variables_: are data relevant to the state of the object.
+
+- _Activities_: are actions that are performed when in a certain state. There are three types of activities for each state:
+    - Entry: activities are actions that occur when the state is just entered from another state.
+    - Exit: activities are actions that occur when the state is exited and moves on to another state.
+    - Do: activities are actions that occur once, or multiple times while the object is in a certain state.
+
+_Termination_ represents an object being destroyed, or the process being completed, and is drawn as a circle with a filled circle inside.
 
 
 <h2>Model Checking</h2>
