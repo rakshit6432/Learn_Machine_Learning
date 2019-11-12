@@ -131,14 +131,160 @@ __Groupby queries:__
 
 <h3>Querying JSON Data with MongoDB</h3>
 
+Just like a basic SQL query states, which parts of which records from one or more table should be reported, a MongoDB query states which parts of which documents from a _document collection_ should be returned.
 
+The primary query is expressed as a find function, which contains two arguments and an optional qualifier:
+
+```sql
+db.collection.find(<query filter>, <projection>).<cursor modifier>
+```
+
+There are four things to notice in this function:
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_find.png">
+
+The same query in both SQL and MongoDB:
+
+```sql
+---------------------------- Query 1: ----------------------------
+-- sql
+select * from beers;
+
+-- mongodb
+db.beers.find()
+
+---------------------------- Query 2: ----------------------------
+-- sql
+select beer, price from sells;
+
+-- mongodb
+db.sells.find({}, {beer:1, price:1})
+-- Query condition is empty because we need to return all queries
+-- The 1 in the projection clause means we have an output,
+-- we can use 0 to specify no output
+
+---------------------------- Query 3: ----------------------------
+-- sql
+select manf from beers where name='Heineken';
+
+-- mongodb
+db.beers.find({name:"Heineken"}, {manf:1, _id:0})
+
+---------------------------- Query 4: ----------------------------
+-- sql
+select distinct beer, price from sells where price>15;
+
+-- mongodb
+db.sells.distinct({price:{$gt:15}}, {beer:1, price:1, _id:0})
+```
+
+__Some MongoDB Operators:__
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_operators.png">
+
+The other MongoDB operators can be found in their [docs](https://docs.mongodb.com/manual/reference/operator/query/).
+
+MongoDB uses regular expressions to specify partial string matches. For example
+
+```sql
+---------------------------- Query 5: ----------------------------
+-- Count the number of manufacturers whose names have the partial
+-- string "am" in it- must be case insensitive
+db.beers.find(name:{$regex:/am/i}).count()
+-- 'i' specifies case insensitive
+db.beers.find({name: /am/i}).count() -- Usage in MongoDB
+
+---------------------------- Query 6: ----------------------------
+-- Same query as above but name starts with "Am"
+db.beers.find(name:{$regex:/^Am/}).count()
+db.beers.find({name: /^Am/}).count() -- Usage in MongoDB
+
+---------------------------- Query 7: ----------------------------
+-- Starts with "Am" and ends with "corp"
+db.beers.count(name:{$regex:/^Am.*corps$/})
+db.beers.find({name: /^Am.*corps/}).count() -- Usage in MongoDB
+
+```
+
+__Array Operations:__
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_array_ops.png">
+
+__Compound Statements:__
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_compounds.png">
+
+__Queries over Nested Elements:
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_nested.png">
 
 <h3>Aggregation Functions</h3>
 
+__On Counting and Distinct:__
 
+<img src="../3. Big Data Integration and Processing/images/mongodb_count.png">
+
+__Aggregation Framework:__
+
+MongoDB uses an internal machinery called the aggregation framework, which is modeled on the concept of data processing pipelines. That means documents enter a multi-stage pipeline which transforms the documents at each stage until it becomes an aggregated result.
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_agg.png">
+
+In the example here cust_id is the grouping attribute so it is passed as a parameter to the `$group` function. Now notice the syntax. `_id:$cust_id` says that the grouped data will have an _id attribute, and its value will be picked from the cust_id attribute from the previous stage of computation. Thus, the `$` before the cust_id is telling the system that cust_id is a known variable in the system and not a constant. The `$group` operation also needs a reducer, which is a function that operates on an activity to produce an aggregate result. In this case, the reduce function is sum
+
+__Multi-attribute Grouping:__
+
+As we saw in the relational case, data can be partitioned into chunks on the same machine or on different machines. These chunks are called _chards_. The aggregation pipeline of MongoDB can operate on a charded collection. The grouping operation in MongoDB can accept multiple attributes like the four shown here:
+
+```sql
+db.computers.aggregate(
+    [
+        {
+            $group: {
+                _id: {brand: "$brand", title: "$title", category: "$category", code:"$code"},
+                count:{$sum: 1}
+            }
+        }
+        {
+            $sort: {count:1, category:-1}
+        }
+    ]
+)
+```
+
+Also shown above is a post grouping directive to sort on the basis of two attributes. The first is a computed count variable in ascending order. So the one designates the ascending order. The next sorting attribute is secondary. That means if two groups have the same value for count, then they'll be further sorted based on the category value. But this time the order is descending because of the -1 directive.
+
+__Text Search with Aggregation__
+
+MongoDB has a built in text search engine which can be invoked through the same aggregation framework.
+
+```sql
+db.articles.aggregate(
+    [
+        {$match: {$text: {$search: "Hillary Democrat"}}},
+        {$sort: {score: {$meta: "textScore"}}},
+        {$project: {title:1, _id:0}}
+    ]
+)
+```
+
+__Join in MongoDB:__
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_join_a.png">
+
+<img src="../3. Big Data Integration and Processing/images/mongodb_join_b.png">
 
 <h3>Querying Aerospike</h3>
 
+Aerospike which is a key value store. Key value stores typically offer an API. That is the way to access data using a programming language like Python or Java.
+
+The data model of Aerospike is illustrated here:
+
+<img src="../3. Big Data Integration and Processing/images/aerospike.png">
+
+Data are organized in name spaces which can be in memory or on flash disks. Name spaces are top level data containers. The way you collect data in name spaces relates to how data is stored and managed. So name space contains records, indexes, and policies. Now policies dictate name space behavior like how data is stored, whether it's on RAM or disk, or how how many replicas exist for a record, and when records expire.
+
+A name space can contain sets, you can think of them as tables. Within a record, data is stored in one or many bins. Bins consist of a name and a value.
 
 
 

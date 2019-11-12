@@ -788,7 +788,3 @@ A right join matches the results from two tables and displays all the rows from 
 The full join keyword returns all rows from both tables. That is all rows from the left table and all rows from the right table. So, the full join could return a very large result set.
 
 <img src="../5. Databases and SQL for Data Science/images/full_join.png">
-
-
-
-<h1>Week 4: Course Assignment</h1>

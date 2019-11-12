@@ -1,6 +1,6 @@
 <h1>Content</h1>
 
-[Week 1: Python Primer]()
+[Week 1: Python Primer](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Notes/PythonPrimer.md)
 
 [Week 2: Object-Oriented Programming]()
 
