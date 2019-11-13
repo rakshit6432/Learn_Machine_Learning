@@ -292,10 +292,90 @@ A name space can contain sets, you can think of them as tables. Within a record,
 
 
 
+<h2>Information Integration</h2>
 
 
+<h3>Overview of Information Integration</h3>
+
+Information integration refers to the problem of using many different information sources to accomplish a task.
+
+Information integration system is a software that makes independent data appear as though they are together as a single database.
+
+Querying multiple different data sources and combining their results, is called an integrated view. It is integrated because the data is retrieved from different data sources, and it's called a view because in database terminology it is a relation computed from other relations.
+
+To populate the integrated view we need to go through a step called schema mapping. The term mapping means to establish correspondence between the attributes of the view, which is also called a target relation, and that of the source relations. For example, below is the schema mapping you would need if you want to find customers who have an account in the Insurance data and the Banking data:
+
+<img src="../3. Big Data Integration and Processing/images/schema_mapping.png">
+
+How do we query? For example, how do you find the bank account number of a person whose policyKey is known?
+
+```sql
+select AcctNumber from discountCandidates where policyKey='4-9375528734';
+```
+
+This is pretty straightforward, but the way the query will be evaluated depends on the query architecture of the data integration system. The figure below shows the elements of this architecture.
+
+<img src="../3. Big Data Integration and Processing/images/integrated_data.png">
+
+The vertical z axis specifies whether we have one data source or multiple data sources. The x axis asks whether the integrated data is actually stored physically in some place or whether it is computed on the fly, each time a query is asked. If it is all precomputed and stored, we say that the data is materialized. And if it is computed on the fly, we say it's virtual. The y axis asks whether there is a single schema or global schema defined all over the data integrated for an application or whether the data stay in different computers and it is accessed in a peer-to-peer manner at runtime.
+
+_Record linkage problem_ means we would like to ensure that the set of data records that belong to a single entity are recognized, perhaps by clustering the values of different attributes or by using a set of matching rules so that we know how to deal with it during the integration process.
+
+In a Big Data situation, there are dozens of data sources or more because the company's growing and each source may have a few hundred tables. So it becomes very hard to solve mapping to target problem completely and accurately just because the number of combinations one has to go through is really, really high.
+
+One practical way to tackle this problem is not to do a full-scale data integration in the beginning but adopt what's called a pay-as-you-go model. The pay-as-you-go data management principle is simple. The system should provide some basic integration services at the outset and then evolve the schema mappings between the different sources on an as needed basis. So given a query, the system should generate a best effort or approximate answers from the data sources where a perfect schema mappings do not exist. One approach to do the first approximate schema mapping is called _Probabilistic Schema Mapping_.
+
+In Probabilistic Mediated Schema Design, we answer the question of which data combinations should go together when creating an integrated or mediated schema by joining multiple data sources by associating probability values with each of these options. To compute these values, we need to quantify the relationships between attributes by figuring out which attributes should be grouped or clustered together.
+
+Now two pieces of information available in the source schemas can serve as evidence for attribute clustering. One, the parallel similarity of source attributes, and two, statistical properties of service attributes.
+
+- The first piece of information indicates when two attributes are likely to be similar and is used for creating multiple mediated schemas. One can apply a collection of attribute matching modules to compute pairwise similarity.
+
+- The second piece of information indicates when two attributes are likely to be different, and is used for assigning probabilities to each of the mediated schemas.
+
+For large schemas with large data volumes, one can estimate these measures by taking samples from the actual database to come up with reasonable similarity co-occurrence scores.
+
+<h3>A Data Integration Scenario</h3>
+
+There are several techniques of specifying schema mappings. One of them is called _Local-as-View_. This means we write the relations in each source as a view over the target schema.
+
+<img src="../3. Big Data Integration and Processing/images/lav.png">
+
+The SQL query shown here is straightforward but how do you translate this query so that it can be sent to the sources? Ideally this should be simplest query with no extra operations. To find such an optimal query reformulation, it turns out that this process is very complex and becomes worse as a number of sources increases. Thus query reformulation becomes a significant scalability problem in a big data integration scenario.
+
+For example, let's say there is a governing organization that wants to connect all the health care service provider data to provide better healthcare to patients and they have developed a Reference Information Model (RIM) global schema and expects to use that as a standard. But each healthcare provider can have different schemas, same kind of data with different representations (data variety problem), different implementation standards and on top of it each provider can have large amount of data. So the data integration system's job is to transform the data from the source schema to the schema of the receiving system, the RIM. This is sometimes called the _data exchange problem_.
+
+Informally a data exchange problem can be defined like this: Given a number of relations, a set of schema mappings, and a set of constraints, that the target schema must satisfy, the data exchange problem is to find a finite target database such that both the schema mappings and the target constraints are satisfied.
+
+This can be achieved by:
+
+- Format Conversions: is standardizing schemas and values. For example, the 50 states of the US all have two letter abbreviations. This helps us generalize and have a set of codes available for conversion.
+
+- Constraints: are imposed by the target and source schema. For example, a source may not distinguish between an emergency surgical procedure and a regular surgical procedure. But the target may want to put them in different tables.
+
+- Compressed Data: refers to a way of creating an encoded representation of data. So that this encoder form is smaller than the original representation. A common encoding method is called dictionary encoding. Consider a database with 10 million record of patient visits a lab. Each record indicates a test and its results and we store the data in a column stored relational database rather than a row store relational database. Suppose there are a total of 500 tests so this separate table called the dictionary has 500 rows, which is clearly much smaller than ten million. But if you can't reduce the full data and need to store the 10 million rows, we can compress the data and operate on the compressed data.
+
+- Model transformation: is a process of taking data represented in one model in one source system and converting it to an equivalent data in another model the target system.
+
+- Query transformation: is the process of taking a query on the target schema and converting it to a query against a different data model.
+
+<h3>Integration for Multichannel Customer Analytics</h3>
+
+Data Fusion: Consider a set of data sources, S and a set of data items, D. A data item represents a particular aspect of a real world entity, for each data item, a source can, but not necessarily will, provide a value. The value can be atomic, like good, or a set, or a list or sometimes embedded in the string. The goal of Data Fusion is to find the values of Data Items from a source. In other cases, we could find a value distribution of an item.
+
+Now one obvious problem with the Internet is that there are too many data sources at any time, these lead to many difficulties. First, it is to be understood that with too many data sources there will be many values for the same item. Often these will differ and sometimes they will conflict. A standard technique in this case is to use a voting mechanism.
+
+One of the problems is to estimate the trustworthiness of the source. For each data source, we need to evaluate whether it's reporting some basic or known facts correctly.
+
+Source Selection is the problem of  evaluating the worthiness of sources before information integration.
 
 
+<h2>Industry Examples for Big Data Integration and Processing</h2>
+
+
+<h3>Why Splunk?</h3>
+
+Splunk was founded to pursue a disruptive vision to make machine data accessible, usable, and valuable to everyone.
 
 
 

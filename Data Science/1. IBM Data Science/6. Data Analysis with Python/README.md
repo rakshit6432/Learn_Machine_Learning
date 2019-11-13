@@ -21,6 +21,30 @@ df = pd.read_csv(path)
 
 
 
+<h2>Data Wrangling</h2>
+
+
+<h3>Pre-processing Data in Python</h3>
+
+Data preprocessing is the process of converting or mapping data from one raw form into another format to make it ready for further analysis.
+
+<h3>Dealing with Missing Values in Python</h3>
+
+
+
+<h3>Data Formatting in Python</h3>
+
+
+
+<h3>Data Normalization in Python</h3>
+
+<img src="../6. Data Analysis with Python/images/normalization.png">
+
+<h3>Binning in Python</h3>
+
+
+
+<h3>Turning categorical variables into quantitative variables in Python</h3>
 
 
 

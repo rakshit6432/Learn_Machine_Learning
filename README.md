@@ -95,11 +95,12 @@ By the End of the courses you would have learned:
 - Big Data Management System:
     - Hadoop
     - MapReduce
+    - Postgres
     - MongoDB
     - Aerospike
-    - Spark
     - Splunk
-    - Postgres
+    - Datameer
+    - Spark
 
 - Machine Learning Frameworks:
     - Spark MLlib
