@@ -361,13 +361,17 @@ A slightly more complex function is _strtol_, which lets you specify the base (d
 <h2>Multidimensional Arrays</h2>
 
 
-<h3>Introduction</h3>
-
-
-
 <h3>Declaration</h3>
 
+In C, multidimensional arrays are arrays of arrays. Accordingly, we declare them with multiple sets of square brackets, each indicating the size of the corresponding dimension. For example, we might declare a 2-dimensional array of doubles that is 4 elements by 3 elements:
 
+```c
+double myMatrix[4][3];
+```
+
+<img src="../3. Pointers, Arrays, and Recursion/images/multi_dimensional_arrays.png">
+
+Declaring _myMatrix_ in this fashion results in an array with four elements. Each of the elements of _myMatrix_ is an array of 3 doubles. Accordingly, _myMatrix_ occupies (4 * 3 * __sizeof(double)__) bytes of memory, with the three elements of _myMatrix[0]_ appearing together, followed by the three elements of _myMatrix[1]_, and so on.
 
 <h3>Indexing</h3>
 
@@ -375,17 +379,88 @@ A slightly more complex function is _strtol_, which lets you specify the base (d
 
 <h3>Initializing</h3>
 
+We can initialize a multidimensional array in the same line that we declare it by using a braced initializer, as we can for a one dimensional array. In the case of a multidimensional array, we should remember that each element of the array is itself an array, and write a braced initializer for it:
 
+```c
+double myMatrix[4][3] = { {1.0, 2.5, 3.2},    //elements of myMatrix[0]
+                          {7.9, 1.2, 9.9},    //elements of myMatrix[1]
+                          {8.8, 3.4, 0.0},    //elements of myMatrix[2]
+                          {4.5, 9.2, 1.6} };  //elements of myMatrix[3]
+```
 
 <h3>Array of Pointers</h3>
 
+We can also represent multidimensional data with arrays that explicitly hold pointers to other arrays. For example, we might write the following:
+
+```c
+double row0[3];
+double row1[3];
+double row2[3];
+double row3[3];
+double * myMatrix[4] = {row0, row1, row2, row3};
+```
+
+<img src="../3. Pointers, Arrays, and Recursion/images/array_pointers.png">
+
+In the figure above, we again have a 4x3 matrix, however, this matrix is represented in a rather different fashion in memory. Here, myMatrix is an array of 4 pointers, which explicitly point at the arrays that are the rows of the matrix and each of the row arrays may not be next to each other in memory (they might be, but do not have to be).
+
+Elements of the arrays are accessed in similar ways for both representations. For either representation, myMatrix[2], evaluates to a pointer to the array which is the second row of the matrix. Likewise, myMatrix[2] evaluates to a pointer to the double in the first column of the second row of the matrix.
 
 <h3>Incompatibility</h3>
 
-
+These two ways to represent multidimensional data are not compatible with each other—they are different types, and cannot be implicitly converted from one to the other.
 
 <h3>Array of Strings</h3>
 
+An array of strings is inherently a multidimensional array of characters, as strings themselves are really just arrays of characters. Accordingly, all the same rules apply to arrays of strings, and we can use either representation that we want.
+
+Consider the following two statements, each of which declares a multidimensional array of chars, and initializes it with a braced array of string literals:
+
+```c
+char strs[3][4] = {"Abc", "def", "ghi"};
+char chrs[3][3] = {"Abc", "def", "ghi"};
+```
+
+Observe that the difference between the two declarations is the size of the second dimension of the array. The first statement (which declares strs) includes space for the null terminator, which is required to make the sequence of characters a valid string. The second statement, which declares chrs, does not include such space and only stores the characters that were written (with no null terminator).
+
+<img src="../3. Pointers, Arrays, and Recursion/images/array_strings_1.png">
+
+This second statement is correct if (and only if) we intend to use chrs only as a multidimensional array of characters, and not use its elements for anything which expects a null terminated string.
+
+If you declare a multidimensional array of chars to hold strings of different lengths, then you must size the second dimension according to the length of the longest string. For example:
+
+```c
+char words[4][10] = {"A", "cat", "likes", "sleeping."};
+```
+
+In this example, words requires 40 characters of storage despite the fact that the strings used to initialize it only occupy 22 characters. This representation wastes some space.
+
+<img src="../3. Pointers, Arrays, and Recursion/images/array_strings_2.png">
+
+We might instead use the array-of-pointers representation for an array of strings. Representing multidimensional data with an array of pointers allows us to have items of different lengths, which naturally solves the problem of wasted space.
+
+```c
+const char * words[] = {"A", "cat", "likes", "sleeping."};
+```
+
+Observe that here, we declare words as an array of const char *s—the elements of the array are pointers to const chars, and thus the chars they point to may not be modified.
+
+We will note that it is common to end an array of strings with a NULL pointer, such as this:
+
+```c
+const char * words2[] = {"A", "cat", "likes", "sleeping.", NULL};
+```
+
+This convention is common, as it allows for one to write loops which iterate over the array without knowing a priori how many elements are in the array. Instead, the loop can have a condition which checks for NULL, such as this:
+
+```c
+const char ** ptr = words2;
+while (*ptr != NULL) {
+    printf("%s ", *ptr);
+    ptr++;
+}
+printf("\n");
+```
 
 
 <h2>Function Pointers</h2>
@@ -393,11 +468,62 @@ A slightly more complex function is _strtol_, which lets you specify the base (d
 
 <h3>Function Pointer Basics</h3>
 
+The actual instructions that your program executes are (of course), numbers, which are stored in the computer’s memory, just like the program’s data is. Consequently, each instruction has an address, just like each piece of data does. As these instructions have addresses, we can have pointers to them. It is not generally useful to have a pointer to an arbitrary instruction, but it can be quite useful to have a pointer to the first instruction in a function—which we typically just think of as a pointer to the function itself, and call a _function pointer_.
 
+Technically speaking, the name of any function is a pointer to that function (that is printf is a pointer to the printf function), however, we do not typically think of them in this way. Instead, when we refer to a function pointer, we typically mean a variable or parameter that points at a function. However, the fact that a function’s name is a pointer to it is useful to initialize such variables and/or parameters.
+
+The most useful application of function pointers arises from the ability to make a function pointer a parameter to a function we are writing (or that is provided by a library).
+
+```c
+void doToAll(int * data, int n, int (*f)(int)) {
+    for (int i = 0; i < n; i++) {
+        data[i] = f(data[i]);
+    }
+}
+```
+
+`int (*f) (int)`, declares a parameter (called f), whose type is “a pointer to a function which takes an int as a parameter, and returns a int." Function pointer declarations are a bit unusual in that the name of the parameter (or variable—the declarations have the same syntax) is in the middle of the declaration. However, this syntax makes sense, as it looks a lot like the normal declaration of a function—the return type comes first, followed by the name, followed by the parameters in parenthesis. Here, however, we only need to specify the parameter types; we do not name them. Note that the parenthesis around `*f` are important—without them the * becomes part of the return type (that is, the * is read as part of int*), and the declaration appears to be describing a function that returns an int*.
+
+As with other types, we can use typedef with function pointers. The syntax is again more similar to function declarations than to other forms of typedef. We might re-write our previous example to use typedef, so that it is easier to read:
+
+```c
+typedef int (*int_function_t) (int);
+
+void doToAll(int * data, int n, int_function_t f) {
+    for (int i = 0; i < n; i++) {
+        data[i] = f(data[i]);
+    }
+}
+```
+
+Once we have this doToAll function defined, we can use it by passing in a pointer to any function of the appropriate type (i.e., one that takes an int and returns an int). Since the name of a function is a pointer to it, we can just write the name of the function we want to use as the value to pass in for that argument:
+
+```c
+int inc(int x) {
+    return x + 1;
+}
+int square(int x) {
+    return x * x;
+}
+…
+doToAll(array1, n1, inc);
+…
+doToAll(array2, n2, square);
+…
+```
 
 <h3>Sorting Functions</h3>
 
+Another example of using function pointers as parameters is a generic sorting function.
 
+There are many different sorting algorithms, but none of them care about the specific type of data, just whether one piece of data is “less than,” “equal to,” or “greater than” another piece of data. Correspondingly, we could make a generic sorting function by having it take a parameter which is a pointer to a function which compares two elements of the array.
+
+```c
+void qsort(void *base, size_t nmemb, size_t size,
+                int (*compar)(const void *, const void *));
+```
+
+The first parameter to this function, __void * base__, is the array to sort. Recall that __void *__ is “a pointer to an unspecified type of data”—allowing qsort to take an array of any type. The second parameter, *size_t nmemb* specifies the number of elements (or members) in the array (recall that *size_t* is an unsigned integer type appropriate to use for the size of things). The third parameter, *size_t size* specifies the size of each element of the array—that is, how many bytes each elements takes in memory. This information is required because otherwise qsort has no way to tell where one element of the array ends and the next begins. The final parameter is *compar* is a pointer to a function which takes two __const void *s__ and returns a int. Here, the __const void *s__ point at the two elements to be compared. The function returns a positive number if the first pointer points at something greater than what the second pointer points at, 0 if they point at equal things, and a negative number for less than.
 
 
 <h2>Security Hazards</h2>
@@ -405,8 +531,11 @@ A slightly more complex function is _strtol_, which lets you specify the base (d
 
 <h3>Format String Attacks</h3>
 
+A string error which can lead to security vulnerabilities is format string attacks. Format string vulnerabilities fall into a larger category of security flaws where a program uses unsanitized inputs. More generally, if a program uses strings in a way that certain characters are special, it must take care to remove or escape those characters in input read from the user. In the case of format strings for printf, these special characters are % signs. If we wanted to let the user control the format string, we could do so safely if (and only if), we took care to sanitize the string first—iterating over it and modifying % signs to remove their special meaning (i.e., by removing them or converting them to %%—the format specifier which prints a literal percent sign). However, in the case of printf there is no reason to take this approach—it is simpler (and thus less error prone) to simply use the %s specifier to print the string literally. If we need format specifiers in a user-dependent way, our code should build the format string itself.
 
+The command shell considers many characters to be special, but one particularly dangerous one is $`$—text enclosed in back-ticks is executed as its own command. Suppose our program reads some input from the user, and passes it as an argument to a shell command—that is, it executes someCommand stringFromUser. If a malicious user enters $`rm -rf *`$, then the command shell will perform back-tick expansion, and run the command rm -rf *, which will erase all files in the current directory. While this command is destructive, a more insidious user could find far better commands to execute—ones which give them access to the system to gain and/or modify information.
 
+A similar problem can occur with improper use of databases, where the program passes SQL commands to the database as a string. We will not go into the details of SQL, but imagine we can illustrate the point without a full understanding of them. Suppose the program wants to run the command SELECT * from Users WHERE name='strFromUser', where strFromUser is a string read from the user (e.g., you have asked them for their user name, and they have entered it). If we are not careful, the user may type a ' (terminating the literal which name is matched against), and a ; to end the current command, followed by an arbitrary command of his choosing. Such a vulnerability allows the attacker to modify information in the database however he wants.
 
 
 

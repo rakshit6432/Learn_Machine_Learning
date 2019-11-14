@@ -219,19 +219,47 @@ The syntax `fp.close()` closes the file associated with proxy fp, ensuring that 
 <h2>Exception Handling </h2>
 
 
+Exceptions are unexpected events that occur during the execution of a program. An exception might result from a logical error or an unanticipated situation. In Python, _exceptions_ (also known as errors) are objects that are _raised_ (or _thrown_) by code that encounters an unexpected circumstance.
+
+<img src="../images/python_exceptions.png">
+
+
 <h3>Raising an Exception</h3>
 
+An exception is thrown by executing the raise statement, with an appropriate instance of an exception class as an argument that designates the problem. For example, if a function for computing a square root is sent a negative value as a parameter, it can raise an exception with the command:
 
+```python
+raise ValueError(' x cannot be negative ')
+```
 
 <h3>Catching an Exception</h3>
 
+_try-except_:
 
+```python
+try:
+    ratio = x / y
+except ZeroDivisionError:
+    ... do something else ...
+```
 
 
 <h2>Iterators and Generators</h2>
 
 
+In Python, the mechanism for iteration is based upon the following conventions:
 
+- An iterator is an object that manages an iteration through a series of values. If variable, i, identifies an iterator object, then each call to the built-in function, next(i), produces a subsequent element from the underlying series, with a StopIteration exception raised to indicate that there are no further elements
+
+- An iterable is an object, obj, that produces an iterator via the syntax iter(obj).
+
+By these definitions, an instance of a list is an iterable, but not itself an iterator. With data = [1, 2, 4, 8], it is not legal to call next(data). However, an iterator object can be produced with syntax, i = iter(data), and then each subsequent call to next(i) will return an element of that list.
+
+__Generators:__
+
+A generator is implemented with a syntax that is very similar to a function, but instead of returning values, a yield statement is executed to indicate each element of the series.
+
+Notice use of the keyword yield rather than return to indicate a result. This indicates to Python that we are defining a generator, rather than a traditional function. It is illegal to combine yield and return statements in the same implementation, other than a zero-argument return statement to cause a generator to end its execution.
 
 
 <h2>Additional Python Conveniences </h2>
@@ -241,23 +269,73 @@ The syntax `fp.close()` closes the file associated with proxy fp, ensuring that 
 
 
 
-
 <h3>Comprehension Syntax</h3>
 
+A very common programming task is to produce one series of values based upon the processing of another series. Often, this task can be accomplished quite simply in Python using what is known as a _comprehension syntax_. We begin by demonstrating list comprehension, as this was the first form to be supported by Python. Its general form is as follows:
 
+```python
+[ expression for value in iterable if condition ]
+```
 
+Python supports similar comprehension syntaxes that respectively produce a set, generator, or dictionary:
+
+```python
+[k*k for k in range(1, n+1)]          # list comprehension
+{k*k for k in range(1, n+1)}          # set comprehension
+(k*k for k in range(1, n+1))          # generator comprehension
+{k: k*k for k in range(1, n+1)}       # dictionary comprehension
+```
+
+The generator syntax is particularly attractive when results do not need to be stored in memory. For example, to compute the sum of the first n squares, the generator syntax, `total = sum(k k for k in range(1, n+1))`, is preferred to the use of an explicitly instantiated list comprehension as the parameter
 
 <h3>Packing and Unpacking of Sequences</h3>
 
+Python provides two additional conveniences involving the treatment of tuples and other sequence types. The first is rather cosmetic. If a series of comma-separated expressions are given in a larger context, they will be treated as a single tuple, even if no enclosing parentheses are provided. For example, `data = 2, 4, 6, 8`. This behavior is called _automatic packing_ of a tuple.
+
+As a dual to the packing behavior, Python can automatically _unpack_ a sequence, allowing one to assign a series of individual identifiers to the elements of sequence. As an example, `a, b, c, d = range(7, 11)`.
+
+The combination of automatic packing and unpacking forms a technique known as _simultaneous assignment_, whereby we explicitly assign a series of values to a series of identifiers, using a syntax, `x, y, z = 6, 2, 5`.
+
+When using a simultaneous assignment, all of the expressions are evaluated on the right-hand side before any of the assignments are made to the left-hand variables. This is significant, as it provides a convenient means for swapping the values associated with two variables, `j, k = k, j`.
 
 
 <h2>Scopes and Namespaces</h2>
 
 
+The process of determining the value associated with an identifier is known as _name resolution_.
 
+Whenever an identifier is assigned to a value, that definition is made with a specific _scope_. Top-level assignments are typically made in what is known as _global_ scope. Assignments made within the body of a function typically have scope that is _local_ to that function call. Each distinct scope in Python is represented using an abstraction known as a _namespace_. A namespace manages all identifiers that are currently defined in a given scope.
 
 
 <h2>Modules and the Import Statement </h2>
 
 
 <h3>Existing Modules</h3>
+
+<img src="../images/python_modules.png">
+
+Python uses a more advanced technique known as a _Mersenne twister_ for it's pseudo-random number generator. It turns out that the sequences generated by these techniques can be proven to be statistically uniform, which is usually good enough for most applications requiring random numbers, such as games. For applications, such as computer security settings, where one needs unpredictable random sequences, this kind of formula should not be used. Instead, one should ideally sample from a source that is actually random, such as radio static coming from outer space.
+
+Since the next number in a pseudo-random generator is determined by the previous number(s), such a generator always needs a place to start, which is called its _seed_. The sequence of numbers generated for a given seed will always be the same. One common trick to get a different sequence each time a program is run is to use a seed that will be different for each run.
+
+
+<h2>Exercises</h2>
+
+
+<h3>Reinforcement</h3>
+
+R-1.1 Write a short Python function, is multiple(n, m), that takes two integer values and returns True if n is a multiple of m, that is, n = mi for some integer i, and False otherwise
+
+R-1.4 Write a short Python function that takes a positive integer n and returns the sum of the squares of all the positive integers smaller than n.
+
+<h3>Creativity</h3>
+
+C-1.14 Write a short Python function that takes a sequence of integer values and determines if there is a distinct pair of numbers in the sequence whose product is odd.
+
+C-1.19 Demonstrate how to use Python’s list comprehension syntax to produce the list ['a', 'b', 'c', ..., 'z'], but without having to type all 26 such characters literally
+
+<h3>Projects</h3>
+
+P-1.29 Write a Python program that outputs all possible strings formed by using the characters 'c', 'a', 't', 'd', 'o', and 'g' exactly once.
+
+P-1.33 Write a Python program that simulates a handheld calculator. Your program should process input from the Python console representing buttons that are “pushed,” and then output the contents of the screen after each operation is performed. Minimally, your calculator should be able to process the basic arithmetic operations and a reset/clear operation.

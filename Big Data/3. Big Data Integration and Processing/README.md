@@ -383,8 +383,46 @@ Splunk was founded to pursue a disruptive vision to make machine data accessible
 
 
 
+<h2>Big Data Pipelines and High-level Operations for Big Data Processing</h2>
 
 
+<h3>Big Data Processing Pipelines</h3>
+
+
+
+<h3>Some High-Level Processing Operations in Big Data Pipelines</h3>
+
+
+
+<h3>Aggregation Operations in Big Data Pipelines</h3>
+
+
+
+<h3>Typical Analytical Operations in Big Data Pipelines</h3>
+
+
+
+
+<h2>Big Data Processing Tools and Systems</h2>
+
+
+<h3>Overview of Big Data Processing Systems</h3>
+
+
+
+<h3>Big Data Workflow Management</h3>
+
+
+
+<h3>The Integration and Processing Layer</h3>
+
+
+
+<h3>Introduction to Apache Spark</h3>
+
+
+
+<h3>Getting Started with Spark</h3>
 
 
 

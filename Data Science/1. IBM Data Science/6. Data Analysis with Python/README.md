@@ -52,7 +52,36 @@ Data preprocessing is the process of converting or mapping data from one raw for
 
 
 
+<h2>Exploratory Data Analysis</h2>
 
+
+<h3>Descriptive Statistics</h3>
+
+<img src="../6. Data Analysis with Python/images/box_plot.png">
+
+<h3>GroupBy in Python</h3>
+
+
+
+<h3>Correlation</h3>
+
+
+
+<h3>Correlation - Statistics</h3>
+
+One way to measure the strength of the correlation between continuous numerical variable is by using a method called Pearson correlation. Pearson correlation method will give you two values: the correlation coefficient and the P-value.
+
+<img src="../6. Data Analysis with Python/images/correlation.png">
+
+<h3>Analysis of Variance ANOVA</h3>
+
+ANOVA is statistical test that stands for Analysis of Variance. ANOVA can be used to find the correlation between different groups of a categorical variable.
+
+The ANOVA test returns two values, the F-test score and the p-value. The F-test calculates the ratio of variation between the groups mean, over the variation within each of the sample groups. The p-value shows whether the obtained result is statistically significant.
+
+<img src="../6. Data Analysis with Python/images/anova_example.png">
+
+<img src="../6. Data Analysis with Python/images/anova_example2.png">
 
 
 
