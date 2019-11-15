@@ -89,9 +89,83 @@ The ANOVA test returns two values, the F-test score and the p-value. The F-test 
 
 
 
+<h2>Model Development</h2>
 
 
+<h3>Linear Regression and Multiple Linear Regression</h3>
 
+Linear regression will refer to one independent variable to make a prediction. Multiple linear regression will refer to multiple independent variables to make a prediction.
+
+<img src="../6. Data Analysis with Python/images/linear_regression.png">
+
+__Simple Linear Regression:__
+
+<img src="../6. Data Analysis with Python/images/slr.png">
+
+
+<h3>Model Evaluation using Visualization</h3>
+
+__Regression Plot:__
+
+Why use a regression plot?
+It gives us a good estimate of:
+1. The relationship between two variables
+2. The strength of the correlation
+3. The direction of the relationship (positive or negative)
+
+<img src="../6. Data Analysis with Python/images/regression_plot.png">
+
+The horizontal axis is the independent variable. The vertical axis is the dependent variable. Each point represents a different target point. The fitted line represents the predicted value.
+
+__Residual Plot:__
+
+The residual plot represents the error between the actual value.
+
+<img src="../6. Data Analysis with Python/images/residual_plot.png">
+
+We expect to see the results to have zero mean, distributed evenly around the x axis with similar variance. There is no curvature. This type of residual plot suggests a linear model is appropriate.
+
+In the residual plot below, there is a curvature:
+
+<img src="../6. Data Analysis with Python/images/residual_plot2.png">
+
+The values of the error change with x. The residuals are not randomly separated. This suggests the linear assumption is incorrect. This plot suggests a nonlinear function.
+
+In the plot below, we see the variance of the residuals increases with x. Therefore, our model is incorrect.
+
+<img src="../6. Data Analysis with Python/images/residual_plot3.png">
+
+__Distribution Plot:__
+
+A distribution plot counts the predicted value versus the actual value. These plots are extremely useful for visualizing models with more than one independent variable or feature.
+
+<img src="../6. Data Analysis with Python/images/distribution_plot.png">
+
+In the plot above the dependent variable or feature is price. The fitted values that result from the model are in blue. The actual values are red. We see the predicted values for prices in the range from 40,000 to 50,000 are inaccurate. The prices in the region from 10,000 to 20,000 are much closer to the target value.
+
+<h3>Polynomial Regression and Pipelines</h3>
+
+Polynomial regression is a special case of the general linear regression. This method is beneficial for describing curvilinear relationships. Curvilinear relationship is what you get by squaring or setting higher order terms of the predictor variables in the model transforming the data.
+
+<img src="../6. Data Analysis with Python/images/polynomial_regression.png">
+
+The degree of the regression makes a big difference and can result in a better fit If you pick the right value. In all cases, the relationship between the variable and the parameter is always linear.
+
+<h3>Measures for In-Sample Evaluation</h3>
+
+__Mean Square Error:__
+
+To measure the MSE, we find the difference between the actual value y and the predicted value yhat then square it.
+
+__R-squared:__
+
+R-squared is also called the coefficient of determination. It’s a measure to determine how close the data is to the fitted regression line. Think about it as comparing a regression model to a simple model, i.e., the mean of the data points.
+
+<img src="../6. Data Analysis with Python/images/r_squared.png">
+
+From the value that we get from the R-squared, we can say that approximately x% of the variation of the target label is explained by the linear model. Your R^2 value is usually between 0 and 1, if your R^2 is negative it can be due to overfitting.
+
+<h3>Prediction and Decision Making</h3>
 
 
 

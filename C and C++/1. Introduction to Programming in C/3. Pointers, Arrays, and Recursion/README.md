@@ -540,3 +540,152 @@ A similar problem can occur with improper use of databases, where the program pa
 
 
 <h1>Week 4: Recursion</h1>
+
+
+
+<h2>Recursion: An Alternative to Iteration</h2>
+
+
+<h3>Reading Recursive Code</h3>
+
+
+
+<h2>Writing Code with Recursion</h2>
+
+
+<h3>Principles of Writing Recursive Code</h3>
+
+- Start with the seven steps to write a program.
+- Have a base case- a condition in which it can give an answer without calling itself
+- The recursive calls should always make progress towards the base case.
+
+<h3>Is Recursion Slow?</h3>
+
+One incorrect conclusion that perpetuates as a bit of an “urban myth” is that recursion is slow.
+
+One way to fix the performance problem of slow algorithms that requires computing the same thing without changing the underlying algorithm is memoization—keeping a table of values that we have already computed, and checking that table to see if we already know the answer before we recompute something.
+
+
+<h2>Other Recursion Techniques</h2>
+
+
+<h3>Tail Recursion</h3>
+
+The recursive functions we have seen so far use _head recursion_— they perform computation after they make a recursive call. In the factorial example, after the recursive call to factorial, the returned result is multiplied by n before that answer is returned. There is another form of recursion, called _tail recursion_. In tail recursion, the recursive call is the __last__ thing the function does before returning. That is, for a tail recursive function f, the only recursive call will be found in the context of __return f (...);__ —as soon as the recursive call to f returns, this function immediately returns its result without any further computation.
+
+A generalization of this idea (separate from recursion) is a _tail call_— a function call is a tail call if the caller returns immediately after the called function returns, without further computation. These two concepts tie together in that a recursive function is tail recursive if-and-only-if its recursive call is a tail call.
+
+```c
+int factorial_helper (int n, int ans) {
+    //base case
+    if (n <= 0) {
+        return ans;
+    }
+    //recursive call is a tail call
+    //after recursive call returns, just return its answer
+    return factorial_helper (n - 1, ans ∗ n);
+}
+
+int factorial (int n) {
+    return factorial_helper (n, 1); //tail call
+}
+```
+
+Helper functions are quite common with tail recursion, but may appear in other contexts as well.
+
+An optimization that many compilers will do to make tail recursive functions more efficient is when it performs "tail recursion elimination" it reuses the current frame for the tail recursive call. Because the function returns immediately after the tail call completes, the compiler recognizes that the values in the frame will never be used again, so it can be overwritten.
+
+<h3>Equivalence of Tail Recursion and Iteration</h3>
+
+Tail recursion and iteration are equivalent. Any algorithm we can write with iteration, we can trivially transform into tail recursion, and vice-versa. A smart compiler will compile tail recursive code and iterative code into the exact same instructions. For example, the above tail recursion can be written using while loop as:
+
+```c
+int factorial (int n) {
+    int ans = 1;
+    while(n>0) {
+        ans = ans * n;
+        n--;
+    }
+    return ans;
+}
+```
+
+In general, if we have a loop that looks like this (note that this is not truly C, but rather pseudo-code: expri is a placeholder for an expression, someCode is a placeholder for arbitrary code, etc.):
+
+```c
+t1 var1 = expr1;  //t1..tN are types (like int)
+t2 var2 = expr2;
+…
+tN varN = exprN;
+
+while (condition) {  //whatever conditional expression
+    someCode;          //we might do some other code here
+                        //eg printing things
+    var1 = update1;
+    var2 = update2;
+    …
+    varN = updateN;
+}
+return ansExpr; //some expression like var1+ var2 * var3
+```
+
+We can transform it into a tail recursion that looks like this:
+
+```c
+appropriateType helper(t1 var1, t2 var2, … tN varN) {
+    if (!condition) {
+        return ansExpr;
+    }
+    someCode;
+    return helper(update1, update2, … updateN);
+}
+```
+
+The inverse is also true—we can convert tail recursion to a while loop by doing the reverse.
+
+The equivalence of tail recursion and iteration is especially important for _functional programming languages_. In a purely functional language, you cannot actually modify a value once you create it (at least not from the standpoint of the language: the compiler is free to re-use the same “box” if it can conclude that you will never use it again). As such, there are not loops (which typically require modifying variables to change the conditions), but rather only recursive functions. What you would typically write as a loop, you instead just write as a tail recursive function.
+
+<h3>Mutual Recursion</h3>
+
+We may also find it useful to write some functions using _mutual recursion_— two or more functions which call each other. Recall that recursive functions come up when our generalized steps call for us to solve the same problem on parameter values closer to the base case(s). Mutually recursive functions occur when we write one function, find a complex step that we want to abstract out into a second function, then go to write that second function only find a complex step which exactly matches the first function. Here, we again need to be careful to make sure the mutually recursive pair makes progress towards a base case, which does not require recursion—otherwise, we will recurse infinitely and our program will not terminate.
+
+As a (somewhat contrived) example, suppose that we did not have the modulus (%) operator available, and wanted to write a function to figure out if a positive number is even. We might start from the fact that 0 (is even) and 1 (is not even) are easy cases (strictly speaking, we only need one base case: 0), and use the fact that n is even if (and only if) n - 1 is odd. We would now need to proceed by writing the isOdd function which we relied on in implementing isEven. In writing that, we might start from the fact that 0 (is not odd) and 1 (is odd) are easy cases, and use the fact that n is odd if (and only if) n - 1 is even. These two function are mutually recursive—they call each other. Note that we will need to write the prototype (recall that the prototype for a function tells the name, return type, and argument types without providing the body) for the second function before the first, to let the compiler know about the existence of the second function. The resulting code would look like this:
+
+```c
+int isOdd (unsigned int n); //prototype for isOdd
+int isEven (unsigned int n) {
+    if (n == 0) {
+        return 1;
+    }
+    if (n == 1) {
+        return 0;
+    }
+    return isOdd (n - 1); //complicated step: abstract into a function
+}
+
+int isOdd (unsigned int n) {
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    return isEven (n - 1); //already have a function to do this step
+}
+```
+
+There are many important uses of mutually recursive functions. One common use is _recursive descent parsing_. Parsing is the process of analyzing input text to determine its meaning. A recursive descent parser is typically written by writing many functions (each of which parses a specific part of the input) which then mutually recurse to accomplish their jobs.
+
+At a high level, to parse a function call (f(arg1, arg2,...)) you would write a function _parseCall_. The parseCall would read the function name, and the open parenthesis, then repeatedly call another function, _parseExpression_ to parse each argument (which must be an expression)—as well as checking if the argument is followed by a comma or a close parenthesis. The parseExpression function itself may encounter a function call, in which case, it would need to call parseCall. Such a situation would occur if the text being parsed looked like this f(3,g(42), h(x,y,z(1)))—some of the arguments to f are themselves function calls, and in fact, one of the arguments to h is also a function call.
+
+Such a parse often results in a mutually recursively defined data structure—meaning you have two (or more) types which recursively reference each other. Algorithms to operate on mutually recursive data structures typically lend themselves quite naturally to mutually recursive implementations. Of course, mutually recursive data structures may come up in a variety of other contexts as well.
+
+<h3>Recursion Theory</h3>
+
+Recursion has a strong relationship to the mathematical proof technique of induction. If you need a quick refresher on induction, it is a technique that lets us prove $\forall \ x \in ℕ.$ $p(x)$, where $p(x)$ is some proposition about $x$. (Translation: we would like to prove that $p(x)$ is true for all natural numbers, $x$.) Proof by induction starts by proving the base case, $p(0)$. The proof then proceeds by showing the inductive case—either proving $\forall \ n \in \mathbb{N}.$ $p(n) \rightarrow p(n+1)$ (weak induction) or $\forall \  n \in \mathbb{N}$. $(\forall \ x \in \mathbb{N} <n. \ p(x)) \rightarrow p(n+1)$ (strong induction).
+
+The similarities between the two—having a base case, and a recursive/inductive case working on smaller values—are not a random coincidence. Our recursive function computes some answer (with certain properties) for all possible inputs. The recursive function works by assuming that the recursive case works correctly, and using that fact to make the current case work correctly—much like the inductive case assumes that the proposition holds for smaller numbers, and uses that fact to prove it for the “current” number. In fact, if we wanted to prove that a recursive function is correct, we would proceed by induction—and the structure of the inductive proof would mirror the structure of the recursive function.
+
+Recursion is not just limited to the natural numbers (unsigned ints). We can recurse with arguments of different types, or on the natural numbers with a different ordering. In general, we can recurse on any set with a well-ordering (that is, a total ordering where every subset of the set has a least element) on it. Proof by induction over all integers is a bit trickier, since they do not have a smallest value (thus base case) under their standard < ordering.
+
+If we can construct a well-ordering of our parameters, and show that every time we recurse we are recursing with values that are “less than” (under this well-ordering) what was passed in, we can conclude that our recursion will always terminate—that is, we will never recurse infinitely. Observe that this property implies that we have a base case, as the well-ordering has a smallest element, so we are not allowed to recurse on that element.

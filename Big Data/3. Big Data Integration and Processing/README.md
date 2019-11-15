@@ -388,19 +388,102 @@ Splunk was founded to pursue a disruptive vision to make machine data accessible
 
 <h3>Big Data Processing Pipelines</h3>
 
+Most big data applications are composed of a set of operations executed one after another as a pipeline. Data flows through these operations, going through various transformations along the way. We also call this dataflow graphs.
 
+Below is the hello world MapReduce example for WordCount which reads one or more text files and counts the number of occurrences of each word in these text files.
+
+<img src="../3. Big Data Integration and Processing/images/map_reduce.png">
+
+In this application, in the first data split step, the files were first split into HDFS cluster nodes as partitions of the same file or multiple files. Then a map operation is step 2, in this case, a user defined function to count words was executed on each of these nodes. Step 3 is the shuffle and sort step where all the key values that were output from map were sorted based on the key and the key values with the same word were moved or shuffled to the same node. Finally, step 5, the reduce operation was executed on these nodes to add the values for key-value pairs with the same keys.
+
+We can create a generalized pattern called as "split-do-merge" to achieve data parallel scalability by generalizing the steps above into __Split__, __Do something__ and __Merge__. We call the stitched-together version of these sets of steps for big data processing "big data pipelines".
+
+For big data processing, the parallelism of each step in the pipeline is mainly data parallelism. We can simply define data parallelism as running the same functions simultaneously for the elements or partitions of a dataset on multiple cores.
+
+Similar techniques apply to stream processing using real time big data ingestion engines, like Kafka or Flume and passed into a Streaming Data Platform for processing like Samza, Storm or Spark streaming. The process stream data can then be served through a real-time view or a batch-processing view. Real-time view is often subject to change as potentially delayed new data comes in. The storage of the data can be accomplished using H-Base, Cassandra, HDFS, or many other persistent storage systems.
+
+<img src="../3. Big Data Integration and Processing/images/big_data_pipeline.png">
 
 <h3>Some High-Level Processing Operations in Big Data Pipelines</h3>
 
+In data integration and processing pipelines, data goes through a number of operations, which can apply a specific function to it, can work the data from one format to another, join data with other data sets, or filter some values out of a data set. We generally refer to these as transformations, some of which can also be specially named aggregations.
 
+__Map Transformation__:
+
+<img src="../3. Big Data Integration and Processing/images/map_transformation.png">
+
+__Reduce Transformation__:
+
+<img src="../3. Big Data Integration and Processing/images/reduce_transformation.png">
+
+__Cross/Cartesian Transformation__:
+
+In a cross or cartesian product operation, each data partition gets paired with all other data partitions, regardless of its key. This sometimes gets referred to as all pairs.
+
+<img src="../3. Big Data Integration and Processing/images/cross_cartesian_transformation.png">
+
+__Match/Join Transformation__:
+
+<img src="../3. Big Data Integration and Processing/images/match_join_transformation.png">
+
+__Co-group Transformation__:
+
+<img src="../3. Big Data Integration and Processing/images/co_group_transformation.png">
+
+__Filter Transformation__:
+
+<img src="../3. Big Data Integration and Processing/images/filter_transformation.png">
 
 <h3>Aggregation Operations in Big Data Pipelines</h3>
 
+Aggregation is any operation on a data set that performs a specific transformation, taking all the related data elements into consideration. One of the simplest aggregations is summation over all the data elements. Another aggregation that you could perform is summation of individual groups in the data.
 
+Other simple yet useful aggregational operations to help you extract meaning from large data sets are average, maximum, minimum, and standard deviation.
+
+Aggregation over Boolean data sets that can have true-false or one-zero values could be a complex mixture of AND, OR, and NOT logical operations.
+
+Set operations like union, intersection and difference can also be very useful depending on your application.
 
 <h3>Typical Analytical Operations in Big Data Pipelines</h3>
 
+Analytical operations are operations used in analytics, which is the process of transforming data into insights for making more informed decisions.
 
+__Sample Analytical Operations__
+
+- _Classification_: the goal is to predict a categorical target from the input data. The decision tree algorithm is one technique for classification. With this technique, decisions to perform the classification task are modeled as a tree structure.
+
+- _Clustering_: the goal is to organize similar items in to groups of association. A simple and commonly used algorithm for cluster analysis is k-means. With k-means, samples are divided into k clusters. This clustering is done in order to minimize the variance or similarity between samples within the same cluster using some similarity measures such as distance.
+
+    K-Means clustering in Spark
+
+    <img src="../3. Big Data Integration and Processing/images/spark_clustering.png">
+
+- _Path Analysis_: One analytical operation using graphs is path analysis, which analyzes sequences of nodes and edges in a graph. A common application of path analysis is to find routes from one location to another location.
+
+    This code shows some operations for path analysis on neo4j, which is a graph database system using a query language called Cypher.
+
+    <img src="../3. Big Data Integration and Processing/images/path_analysis.png">
+
+
+- _Connectivity analysis_: of graphs has to do with finding and tracking groups to determine interactions between entities. Entities in highly interacting groups are more connected to each other than to entities of other groups in a graph. These groups are called communities, and are interesting to analyze as they give insights into the degree and patterns of the interaction between entities, and also between communities. Some applications of connectivity analysis are to extract conversation threads. For example, by looking at tweets and retweets to find interacting groups or to determine which users are interacting with each other users.
+
+    Connectivity analysis using Cypher on neo4j
+
+    <img src="../3. Big Data Integration and Processing/images/connectivity_analysis.png">
+
+__Machine Learning Algorithms__
+
+- Classification
+- Regression
+- Cluster Analysis
+- Associative Analysis
+
+__Graph Analysis Techniques__
+
+- Path Analytics
+- Connectivity Analytics
+- community Analytics
+- Centrality Analytics
 
 
 <h2>Big Data Processing Tools and Systems</h2>
