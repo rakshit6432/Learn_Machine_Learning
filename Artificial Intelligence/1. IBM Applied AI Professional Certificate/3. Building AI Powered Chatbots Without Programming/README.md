@@ -72,15 +72,19 @@ Three important rules of chatbot design:
 
 
 
+<h2>Deploying your Chatbot</h2>
+
+
+<h3>Deploying a WordPress Site</h3>
 
 
 
+<h2>Context Variables & Slots</h2>
 
 
+<h3>Working with Context Variables and Slots</h3>
 
-
-
-
+Entities are captured and exist only during the current user input. There is no memory of them once the user enters new questions. This is the problem that context variables allow us to solve. At any time, in any node of our dialog, we can store values we collected from the user for later use. Unlike entities, context variable remain available for the entire duration of the conversation with the user, so we can refer back to them at any time. There are a few ways to set context variables, but one of the most convenient ways is using slots.
 
 
 

@@ -326,28 +326,28 @@ Since the next number in a pseudo-random generator is determined by the previous
 
 R-1.1 Write a short Python function, is multiple(n, m), that takes two integer values and returns True if n is a multiple of m, that is, n = mi for some integer i, and False otherwise.
 
-[Solution]("../codes/1.PythonPrimer/multiple.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/multiple.py)
 
 R-1.4 Write a short Python function that takes a positive integer n and returns the sum of the squares of all the positive integers smaller than n.
 
-[Solution]("../codes/1.PythonPrimer/sumSquares.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/sumSquares.py)
 
 <h3>Creativity</h3>
 
 C-1.14 Write a short Python function that takes a sequence of integer values and determines if there is a distinct pair of numbers in the sequence whose product is odd.
 
-[Solution]("../codes/1.PythonPrimer/sequence.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/sequence.py)
 
 C-1.19 Demonstrate how to use Python’s list comprehension syntax to produce the list ['a', 'b', 'c', ..., 'z'], but without having to type all 26 such characters literally.
 
-[Solution]("../codes/1.PythonPrimer/characters.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/characters.py)
 
 <h3>Projects</h3>
 
 P-1.29 Write a Python program that outputs all possible strings formed by using the characters 'c', 'a', 't', 'd', 'o', and 'g' exactly once.
 
-[Solution]("../codes/1.PythonPrimer/possibleStrings.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/possibleStrings.py)
 
 P-1.33 Write a Python program that simulates a handheld calculator. Your program should process input from the Python console representing buttons that are “pushed,” and then output the contents of the screen after each operation is performed. Minimally, your calculator should be able to process the basic arithmetic operations and a reset/clear operation.
 
-[Solution]("../codes/1.PythonPrimer/calculator.py")
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/1.PythonPrimer/calculator.py)
