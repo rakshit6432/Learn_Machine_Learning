@@ -170,3 +170,22 @@ From the value that we get from the R-squared, we can say that approximately x% 
 
 
 <h1>Week 5: Model Evaluation</h1>
+
+
+
+<h2>Model Evaluation and Refinement</h2>
+
+
+<h3>Model Evaluation and Refinement</h3>
+
+Generalization error is a measure of how well our data does at predicting previously unseen data. The error we obtain using our testing data is an approximation of this error.
+
+<h3>Overfitting, Underfitting and Model Selection</h3>
+
+
+
+<h3>Ridge Regression</h3>
+
+
+
+<h3>Grid Search</h3>

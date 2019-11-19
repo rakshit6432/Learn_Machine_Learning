@@ -79,7 +79,7 @@ Three important rules of chatbot design:
 
 
 
-<h2>Context Variables & Slots</h2>
+<h2>Advanced Concepts - Part 1: Context Variables & Slots</h2>
 
 
 <h3>Working with Context Variables and Slots</h3>
@@ -89,3 +89,11 @@ Entities are captured and exist only during the current user input. There is no 
 
 
 <h1>Week 4: Digressions</h1>
+
+
+
+<h2>Advanced Concepts - Part 2: Digressions</h2>
+
+
+<h3>Understanding Digressions</h3>
+
