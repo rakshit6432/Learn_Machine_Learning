@@ -88,22 +88,30 @@ The simplest debugging technique consists of using print statements to track the
 <h2>Class Definitions</h2>
 
 
+A class also serves as a blueprint for its instances, effectively determining the way that state information for each instance is represented in the form of _attributes_ (also known as _fields_, _instance variables_, or _data members_).
+
+
 <h3>Example: CreditCard Class</h3>
 
+__The self Identifier:__
 
+In Python, the self identifier plays a key role. _self_ serves to identify the particular instance upon which a member is invoked.
+
+__The Constructor:__
+
+The specially named `__init__` method that serves as the _constructor_ of a class. Its primary responsibility is to establish the state of a newly created object with appropriate instance variables.
 
 <h3>Operator Overloading and Python’s Special Methods</h3>
 
+__operator overloading_ is done by implementing a specially named method. For example, the `+` operator is overloaded by implementing a method named `__add__`, which takes the right-hand operand as a parameter and which returns the result of the expression. That is, the syntax, a + b, is converted to a method call on object a of the form, `a.__add__(b)`. Similar specially named methods exist for other operators.
 
-
-<h3>Example: Multidimensional Vector Class</h3>
-
-
+<img src="../images/python_overloaded_operations.png">
 
 <h3>Iterators</h3>
 
+An _iterator_ for a collection provides one key behavior: It supports a special method named `__next__` that returns the next element of the collection, if any, or raises a StopIteration exception to indicate that there are no further elements.
 
-<h3>Example: Range Class</h3>
+Fortunately, it is rare to have to directly implement an iterator class. Our preferred approach is the use of the _generator_ syntax, which automatically produces an iterator of yielded values.
 
 
 <h2>Inheritance</h2>
