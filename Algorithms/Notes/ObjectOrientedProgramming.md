@@ -117,37 +117,73 @@ Fortunately, it is rare to have to directly implement an iterator class. Our pre
 <h2>Inheritance</h2>
 
 
+A natural way to organize various structural components of a software package is in a hierarchical fashion, with similar abstract definitions grouped together in a level-by-level manner that goes from specific to more general as one traverses up the hierarchy. For example below is a hierarchy of various exception types in python.
+
+<img src="../images/python_exception_hierarchy.png">
+
+A hierarchical design is useful in software development, as common functionality can be grouped at the most general level, thereby promoting reuse of code, while differentiated behaviors can be viewed as extensions of the general case, In object-oriented programming, the mechanism for a modular and hierarchical organization is a technique known as _inheritance_. This allows a new class to be defined based upon an existing class as the starting point. In object-oriented terminology, the existing class is typically described as the _base class_, _parent class_, or _superclass_, while the newly defined class is known as the _subclass_ or _child class_.
+
+There are two ways in which a subclass can differentiate itself from its superclass. A subclass may _specialize_ an existing behavior by providing a new implementation that _overrides_ an existing method. A subclass may also _extend_ its superclass by providing brand new methods.
+
+
 <h3>Extending the CreditCard Class</h3>
 
+<img src="../images/inheritance_uml_diagram.png">
 
+The mechanism for calling the inherited constructor relies on the syntax, `super()`. For example, for the above uml diagram `super().__init__(customer, bank, acnt, limit)`.
+
+__Protected Members:__
+
+Several object-oriented languages (e.g., Java, C++) draw a distinction for nonpublic members, allowing declarations of _protected_ or _private_ access modes. Members that are declared as protected are accessible to subclasses, but not to the general public, while members that are declared as private are not accessible to either. Python does not support formal access control, but names beginning with a single underscore are conventionally akin to protected, while names beginning with a double underscore (other than special methods) are akin to private.
 
 <h3>Hierarchy of Numeric Progressions</h3>
 
+As a second example of the use of inheritance, we develop a hierarchy of classes for iterating numeric progressions. For example when you have arithmetic, geometric and fibonacci progression:
 
+<img src="../images/progression_hierarchy.png">
 
 <h3>Abstract Base Classes</h3>
 
+In classic object-oriented terminology, we say a class is an _abstract base class_ if its only purpose is to serve as a base class through inheritance. More formally, an abstract base class is one that cannot be directly instantiated, while a concrete class is one that can be instantiated.
+
+In statically typed languages such as Java and C++, an abstract base class serves as a formal type that may guarantee one or more _abstract methods_. This provides support for polymorphism, as a variable may have an abstract base class as its declared type, even though it refers to an instance of a concrete subclass. Because there are no declared types in Python, this kind of polymorphism can be accomplished without the need for a unifying abstract base class. For this reason, there is not as strong a tradition of defining abstract base classes in Python, although Python’s abc module provides support for defining a formal abstract base class.
+
+The _template method pattern_ is when an abstract base class provides concrete behaviors that rely upon calls to other abstract behaviors. In that way, as soon as a subclass provides definitions for the missing abstract behaviors, the inherited concrete behaviors are well defined.
+
+A _metaclass_ is different from a superclass, in that it provides a template for the class definition itself. Specifically, the ABCMeta declaration assures that the constructor for the class raises an error.
+
+The `@abstractmethod` decorator declares particular methods to be abstract, meaning that we do not provide an implementation within our Sequence base class, but that we expect any concrete subclasses to support those two methods. Python enforces this expectation, by disallowing instantiation for any subclass that does not override the abstract methods with concrete implementations.
 
 
 <h2>Namespaces and Object-Orientation</h2>
 
 
+A namespace is an abstraction that manages all of the identifiers that are defined in a particular scope, mapping each name to its associated value.
+
+
 <h3>Instance and Class Namespaces</h3>
 
+_Instance namespace_ manages attributes specific to an individual object. _Class namespace_ manages members that are to be shared by all instances of a class, or used without reference to any particular instance.
 
+A _class-level data member_ is often used when there is some value, such as a constant, that is to be shared by all instances of a class.
+
+__Dictionaries and the slots Declaration:__
+
+By default, Python represents each namespace with an instance of the built-in dict class that maps identifying names in that scope to the associated objects. While a dictionary structure supports relatively efficient name lookups, it requires additional memory usage beyond the raw data that it stores.
+
+Python provides a more direct mechanism for representing instance namespaces that avoids the use of an auxiliary dictionary. To use the streamlined representation for all instances of a class, that class definition must provide a class-level member named `__slots__` that is assigned to a fixed sequence of strings that serve as names for instance variables.
 
 <h3>Name Resolution and Dynamic Dispatch</h3>
 
-
-
-
+In traditional object-oriented terminology, Python uses what is known as _dynamic dispatch_ (or _dynamic binding_) to determine, at run-time, which implementation of a function to call based upon the type of the object upon which it is invoked. This is in contrast to some languages that use _static dispatching_, making a compile-time decision as to which version of a function to call, based upon the declared type of a variable.
 
 
 <h2>Shallow and Deep Copying</h2>
 
 
+A _shallow copy_ means constructing a new collection object and then populating it with references to the child objects found in the original. The copying process does not recurse and therefore won’t create copies of the child objects themselves. In case of shallow copy, a reference of object is copied in other object. It means that any changes made to a copy of object do reflect in the original object. In python, this is implemented using “copy()” function.
 
-
+_Deep copy_ is a process in which the copying process occurs recursively. It means first constructing a new collection object and then recursively populating it with copies of the child objects found in the original. In case of deep copy, a copy of object is copied in other object. It means that any changes made to a copy of object do not reflect in the original object. In python, this is implemented using “deepcopy()” function.
 
 
 <h2>Exercises</h2>
@@ -155,10 +191,33 @@ Fortunately, it is rare to have to directly implement an iterator class. Our pre
 
 <h3>Reinforcement</h3>
 
+R-2.4 Write a Python class, Flower, that has three instance variables of type str, int, and float, that respectively represent the name of the flower, its number of petals, and its price. Your class must include a constructor method that initializes each variable to an appropriate value, and your class should include methods for setting the value of each type, and retrieving the value of each type.
 
+R-2.6 If the parameter to the make payment method of the CreditCard class were a negative number, that would have the effect of raising the balance on the account. Revise the implementation so that it raises a ValueError if a negative value is sent.
+
+R-2.9 Implement the __sub__ method for the Vector class of Section 2.3.3, so that the expression u−v returns a new vector instance representing the difference between two vectors.
+
+R-2.10 Implement the __neg__ method for the Vector class of Section 2.3.3, so that the expression −v returns a new vector instance whose coordinates are all the negated values of the respective coordinates of v.
+
+R-2.11 In Section 2.3.3, we note that our Vector class supports a syntax such as v = u + [5, 3, 10, −2, 1], in which the sum of a vector and list returns a new vector. However, the syntax v = [5, 3, 10, −2, 1] + u is illegal. Explain how the Vector class definition can be revised so that this syntax
+generates a new vector.
+
+R-2.12 Implement the __mul__ method for the Vector class of Section 2.3.3, so that the expression v 3 returns a new vector with coordinates that are 3 times the respective coordinates of v.
+
+R-2.13 Exercise R-2.12 asks for an implementation of __mul__, for the Vector class of Section 2.3.3, to provide support for the syntax v 3. Implement the __rmul__ method, to provide additional support for syntax 3 v.
+
+R-2.14 Implement the __mul__ method for the Vector class of Section 2.3.3, so that the expression u v returns a scalar that represents the dot product of the vectors.
 
 <h3>Creativity</h3>
 
+C-2.31 Write a Python class that extends the Progression class so that each value in the progression is the absolute value of the difference between the previous two values. You should include a constructor that accepts a pair of numbers as the first two values, using 2 and 200 as the defaults.
 
+C-2.32 Write a Python class that extends the Progression class so that each value in the progression is the square root of the previous value. (Note that you can no longer represent each value with an integer.) Your constructor should accept an optional parameter specifying the start value, using 65,536 as a default.
 
 <h3>Projects</h3>
+
+P-2.35 Write a set of Python classes that can simulate an Internet application in which one party, Alice, is periodically creating a set of packets that she wants to send to Bob. An Internet process is continually checking if Alice has any packets to send, and if so, it delivers them to Bob’s computer, and Bob is periodically checking if his computer has a packet from Alice, and, if so, he reads and deletes it.
+
+P-2.38 Write a Python program that simulates a system that supports the functions of an e-book reader. You should include methods for users of your system to “buy” new books, view their list of purchased books, and read their purchased books. Your system should use actual books, which have expired copyrights and are available on the Internet, to populate your set of available books for users of your system to “purchase” and read
+
+P-2.39 Develop an inheritance hierarchy based upon a Polygon class that has abstract methods area() and perimeter(). Implement classes Triangle, Quadrilateral, Pentagon, Hexagon, and Octagon that extend this base class, with the obvious meanings for the area() and perimeter() methods. Also implement classes, IsoscelesTriangle, EquilateralTriangle, Rectangle, and Square, that have the appropriate inheritance relationships. Finally, write a simple program that allows users to create polygons of the various types and input their geometric dimensions, and the program then outputs their area and perimeter. For extra effort, allow users to input polygons by specifying their vertex coordinates and be able to test if two such polygons are similar.

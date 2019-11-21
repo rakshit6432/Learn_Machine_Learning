@@ -85,9 +85,13 @@ In vector calculus, the __Jacobian matrix__ of a vector-valued function in sever
 
 <h2>The Hessian</h2>
 
+Before we get into Hessians, let's briefly look at gradients. The gradient is simply a collection of the derivative of the function for each direction. Each element of the gradient is simply the slope of the function in each direction. Next, the second derivative is simply the derivative of the derivative or the _rate of change of the slope_. The rate of change of the slope corresponds to how “curved” each loss function is. The sharper the curve, the more rapidly the slope changes.
+
 In mathematics, the __Hessian matrix__ or __Hessian__ is a square matrix of second-order partial derivatives of a scalar-valued function, or scalar field. It describes the local curvature of a function of many variables.
 
 <img src="../2. Multivariate Calculus/images/hessian.png">
+
+Each row represents the change of the gradient in a certain direction. Alternatively, you could consider each column to be the gradient of one element of the gradient.
 
 
 
@@ -177,11 +181,33 @@ _Maclaurin series_ says that if you know everything about a function at the poin
 
 <h3>Newton-Raphson in one dimension</h3>
 
+The Newton-Raphson method is one of the most widely used methods for root finding. It can be easily generalized to the problem of finding solutions of a system of non-linear equations numerically, which is referred to as Newton's technique. Moreover, it can be shown that the technique is quadratically convergent as we approach the root, meaning that the square of the error at one iteration is proportional to the error at the next iteration ([Example](https://math.stackexchange.com/questions/1735193/in-practice-what-does-it-mean-for-the-newtons-method-to-converge-quadratically)).
 
+Unlike the bisection and false position methods, the Newton-Raphson (N-R) technique requires only one initial value $x_0$, which we refer to as the initial guess for the root. Let $f(x)$ be a well-behaved function, and let $r$ be a root of the equation $f(x) = 0$. We start with the estimate $x_0$ of $r$. From $x_0$, we produce an improved—we hope—estimate $x_1$. From $x_1$, we produce a new estimate $x_2$. From $x_2$, we produce a new estimate $x_3$. We go on until we are ‘close enough’ to $r$ —or until it becomes clear that we are getting nowhere. The above general style of proceeding is called iterative. Of the many iterative root-finding procedures, the Newton-Raphson method, with its combination of simplicity and power, is the most widely used.
+
+__The Newton-Raphson Iteration:__
+
+<img src="../2. Multivariate Calculus/images/Newton_Raphson_Iteration.png">
+
+Once the Newton Method catches scent of the root, it usually hunts it down with amazing speed. But since the method is based on local information, namely $f(x_n)$ and $f'(x_n)$, the Newton Method’s sense of smell is deficient.
+
+If the initial estimate is not close enough to the root, the Newton Method may not converge, or may converge to the wrong root.
 
 <h3>Gradient Descent</h3>
 
+All algorithms for unconstrained gradient-based optimization can be described as follows. We
+start with iteration number $k = 0$ and a starting point, $x_k$.
 
+<img src="../2. Multivariate Calculus/images/gradient_general_algorithm.png">
+
+There are two subproblems in this type of algorithm for each major iteration: computing the search direction $p_k$ and finding the step size (controlled by $\alpha_k$). The difference between the various types of gradient-based algorithms is the method that is used for computing the search direction.
+
+The gradient descent method uses the gradient vector at each point as the search direction for
+each iteration. The gradient vector is orthogonal to the plane tangent to the isosurfaces of the function. The gradient vector at a point, $g(x_k)$, is also the direction of maximum rate of change (maximum increase) of the function at that point. This rate of change is given by the norm, $\|g(x_k) \|$.
+
+__Gradient Descent Algorithm:__
+
+<img src="../2. Multivariate Calculus/images/gradient_descent_algorithm.png">
 
 
 <h2>Lagrange multipliers</h2>
