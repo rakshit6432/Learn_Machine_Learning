@@ -1,0 +1,147 @@
+<h1>Algorithm Analysis</h1>
+
+
+
+A _data structure_ is a systematic way of organizing and accessing data, and an _algorithm_ is a step-by-step procedure for performing some task in a finite amount of time.
+
+To be able to classify some data structures and algorithms as “good,” we must have precise ways of analyzing them. The primary analysis tool used in this book involves characterizing the running times of algorithms and data structure operations, with space usage also being of interest.
+
+The run time:
+- increases with the input size.
+- may also vary for different inputs of the same size.
+- is affected by the hardware environment (eg: the processor, clock rate, memory, disk).
+- is affected by the software environment (eg: the operating system, programming language) in which the algorithm is implemented and executed.
+- will be smaller if the computer has a much faster processor
+- will be small if the implementation is done in a program compiled into native machine code instead of an interpreted implementation.
+
+In spite of the possible variations that come from different environmental factors, we would like to focus on the relationship between the running time of an algorithm and the size of its input. We are interested in characterizing an algorithm’s running time as a function of the input size.
+
+
+
+<h2>Experimental Studies</h2>
+
+
+We can study the run time of algorithms by executing it on various inputs and recording the time spent during each execution. This can be done in python as below:
+
+```python
+from time import time
+start time = time( ) # record the starting time
+# run algorithm
+end time = time( ) # record the ending time
+elapsed = end time − start time # compute the elapsed time
+```
+
+An elapsed time measured in this fashion is a decent reflection of the algorithm efficiency, but it is by no means perfect. The time function measures relative to what is known as the “wall clock.” Because many processes share use of a computer’s _central processing unit_ (or CPU), the elapsed time will depend on what other processes are running on the computer when the test is performed. A fairer metric is the number of CPU cycles that are used by the algorithm. This can be determined using the clock function of the time module, but even this measure might not be consistent if repeating the identical algorithm on the identical input, and its granularity will depend upon the computer system. Python includes a more advanced module, named timeit, to help automate such evaluations with repetition to account for such variance among trials.
+
+We can also perform independent experiments on many different test inputs of various sizes and visualize the results by plotting the performance of each run of the algorithm:
+
+<img src="../images/fig31.png">
+
+To be meaningful, this analysis requires that we choose good sample inputs and test enough of them to be able to make sound statistical claims about the algorithm’s running time.
+
+__Challenges of Experimental Analysis__
+
+While experimental studies of running times are valuable, especially when fine-tuning production quality code, there are three major limitations to their use for algorithm analysis:
+
+- Experimental running times of two algorithms are difficult to directly compare unless the experiments are performed in the same hardware and software environments.
+
+- Experiments can be done only on a limited set of test inputs; hence, they leave out the running times of inputs not included in the experiment (and these inputs may be important).
+
+- An algorithm must be fully implemented in order to execute it to study its running time experimentally.
+
+
+<h3>Moving Beyond Experimental Analysis</h3>
+
+__Counting Primitive Operations:__
+
+To analyze the running time of an algorithm without performing experiments, we perform an analysis directly on a high-level description of the algorithm (either in the form of an actual code fragment, or language-independent pseudo-code). We define a set of _primitive operations_ such as the following:
+
+- Assigning an identifier to an object
+- Determining the object associated with an identifier
+- Performing an arithmetic operation (for example, adding two numbers)
+- Comparing two numbers
+- Accessing a single element of a Python list by index
+- Calling a function (excluding operations executed within the function)
+- Returning from a function.
+
+Instead of trying to determine the specific execution time of each primitive operation, we will simply count how many primitive operations are executed, and use this number _t_ as a measure of the running time of the algorithm. The implicit assumption in this approach is that the running times of different primitive operations will be fairly similar. Thus, the number, t, of primitive operations an algorithm performs will be proportional to the actual running time of that algorithm.
+
+__Measuring Operations as a Function of Input Size:__
+
+To capture the order of growth of an algorithm’s running time, we will associate, with each algorithm, a function $f(n)$ that characterizes the number of primitive operations that are performed as a function of the input size $n$.
+
+__Focusing on the Worst-Case Input:__
+
+<img src="../images/fig32.png">
+
+An _average case_ analysis usually requires that we calculate expected running times based on a given input distribution, which usually involves sophisticated probability theory. Therefore, we will characterize running times in terms of the _worst case_. Worst case analysis is much easier than average-case analysis, as it requires only the ability to identify the worst-case input, which is often simple.
+
+
+<h2>The Seven Functions Used in This Book</h2>
+
+
+<h3>The Constant Function</h3>
+
+
+
+<h3>The Logarithm Function</h3>
+
+
+
+<h3>The Linear Function</h3>
+
+
+<h3>The N-Log-N Function</h3>
+
+
+
+<h3>The Quadratic Function</h3>
+
+
+
+<h3>The Cubic Function and Other Polynomials</h3>
+
+
+
+<h3>The Exponential Function</h3>
+
+
+
+<h3>Comparing Growth Rates </h3>
+
+
+
+
+
+<h2>Asymptotic Analysis</h2>
+
+
+<h3>The “Big-Oh” Notation</h3>
+
+
+
+<h3>Comparative Analysis</h3>
+
+
+
+<h3>Examples of Algorithm Analysis</h3>
+
+
+
+
+<h2>Simple Justification Techniques</h2>
+
+
+<h3>By Example</h3>
+
+
+
+<h3>The “Contra” Attack</h3>
+
+
+
+<h3>Induction and Loop Invariants</h3>
+
+
+
+<h2>Exercises</h2>

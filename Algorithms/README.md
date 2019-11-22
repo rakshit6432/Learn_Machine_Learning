@@ -4,7 +4,7 @@
 
 [Week 2: Object-Oriented Programming](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Notes/ObjectOrientedProgramming.md)
 
-[Week 3: Algorithm Analysis]()
+[Week 3: Algorithm Analysis](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Notes/AlgorithmAnalysis.md)
 
 [Week 4: Recursion]()
 

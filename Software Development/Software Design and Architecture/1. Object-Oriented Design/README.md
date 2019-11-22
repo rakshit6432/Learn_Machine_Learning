@@ -802,7 +802,21 @@ _Termination_ represents an object being destroyed, or the process being complet
 <h2>Model Checking</h2>
 
 
+In addition to understanding techniques for designing a software system, it is important to know techniques for verifying the system. Some of these techniques include unit testing, beta testing, and simulations. Another one such technique is _model checking_, which is a systematic check of your system’s _state model_ in all its possible states. Model checking helps find errors that other tests cannot.
 
+In model checking, you check all the various states of the software to try and identify any errors, by simulating different events that would change the states and variables of the software. This will help expose any flaws by notifying you of any violation of the rules that occur in the behavior of the state model. Typically, model checks are performed by model checking software.
+
+Imagine software that has a rule not to produce a deadlock. Deadlock is a situation where the system cannot continue because two tasks are waiting for the same resource. The model checker would simulate the different states that could occur in your system, and if a deadlock was possible, it would provide details of this violation.
+
+Model checkers begin by generating a state model from your code. A state model is an abstract state machine that can be in one of various states. The model checker then checks that the state model conforms to be certain behavioral properties. For example, the model checker can examine the state model for flaws like race conditions, exploring all the possible states of your model.
+
+There are three different phases in model checking:
+
+1. _Modelling Phase_: the model description is entered in the same programming languages as the system. Any desired properties are also described. This phase also performs sanity checks. Sanity checks are quick checks that should be easy to do, as they come from clear and simple logic.
+
+2. _Running Phase_: is when the model checker is run to see how the model conforms to the desired properties described in the modelling phase.
+
+3. _Analysis Phase_:  is when all desired properties are checked to be satisfied, and if there are any violations. Violations are called counterexamples. The model checker should provide descriptions of violations in the system, so you can analyze how they occurred.
 
 
 
