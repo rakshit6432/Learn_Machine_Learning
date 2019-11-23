@@ -491,22 +491,143 @@ __Graph Analysis Techniques__
 
 <h3>Overview of Big Data Processing Systems</h3>
 
+Data processing using the MapReduce engine, and resource scheduling and negotiation using the YARN engine.
 
+A way to look at the vast number of tools that have been added to the Hadoop ecosystem, is from the point of view of their functionality in the big data processing pipeline. Simply put, these associate to three distinct layers for __Data Management and Storage__, __Data Integration and Processing__, and __Resource Coordination and Workflow Management__.
+
+While the _data management and storage_ layer includes Hadoop's HDFS there are a number of other systems that rely on HDFS as a file system or implement their own no SQL storage options. As big data can have a variety of structure, semi structured and unstructured formats, and gets analyzed through a variety of tools, many tools were introduced to fit this variety of needs. We call these _big data management systems_. For example,
+- redis and Aerospike are key value stores,
+- Lucene and Gephi are vector and graph data stores,
+- vertica, Cassandra and Hbase are column store databases,
+- Solr and Asterick for managing unstructured and semi-structured text,
+- mongoDB as a document store.
+
+In the _integration and processing_ layer we roughly refer to the tools that are built on top of the HDFS and YARN, although some of them work with other storage and file systems. YARN is a significant enabler of many of these tools making a number of batch and stream processing engines like Storm, Spark and Flink possible.
+
+This layer also includes tools like:
+- Hive or Spark SQL, for bringing a query interface on top of the storage layer.
+- Pig, for scripting simple big data pipelines using the MapReduce framework.
+- Giraph and GraphX of Spark for graph analytics.
+- Mahout on top of the Hadoop stack and MLlib of Spark for machine learning.
+
+_Coordination and management layer_ is where integration, scheduling, coordination, and monitoring of applications across many tools in the bottom two layers take place. This layer is also where the results of the big data analysis gets communicated to other programs via websites, visualization tools, and business intelligence tools. Workflow management systems help to develop automated solutions that can manage and coordinate the process of combining data management and analytical tests in a big data pipeline, as a configurable, structured set of steps. For example,
+- Oozie is a workflow scheduler that can interact with many of the tools in the integration and processing layer.
+- Zookeeper is the resource coordination and monitoring tool and manages and coordinates all the tools and middleware named after animals.
 
 <h3>Big Data Workflow Management</h3>
 
+An important aspect of Big Data applications is the variability of technical needs and steps based on applications being developed. These applications typically involving data ingestion, preparation (e.g., extract, transform, and load), integration, analysis, visualization and dissemination are referred to as Data Science Workflows.
 
+A data science workflow development is the process of combining data and processes into a configurable, structured set of steps that implement automated computational solutions of an application with capabilities including provenance management, execution management and reporting tools, integration of distributed computation and data management technologies, ability to ingest local and remote scripts, and sensor management and data streaming interfaces.
+
+Big Data workflows have been an active research area since the introduction of scientific workflows. After the development and general adoption of MapReduce as a Big Data programming pattern, a number of workflow systems were built or extended to enable programmability of MapReduce applications including Oozie, Nova, Azkaban and Cascading.
 
 <h3>The Integration and Processing Layer</h3>
 
+__Example of Big Data Processing Pipelines:__
 
+<img src="../3. Big Data Integration and Processing/images/big_data_processing_pipeline.png">
+
+Depending on the resources we have access to and characteristics of our application, we apply several considerations to evaluate and pick a software stack for big data. There are 6 such categories of evaluation:
+
+1. Execution Model: Expressivity of the model to support for various transformations of batch or streaming data, or sometimes interactive computing.
+2. Latency
+3. Scalability
+4. Programming Language
+5. Fault Tolerance
+
+Five of the big data processing engines supported by the Apache Foundation:
+
+<img src="../3. Big Data Integration and Processing/images/apache_map_reduce.png">
+
+There is no in-memory processing support for MapReduce, meaning the mappers write the data on files before the reducers can read it, resulting in a high-latency and less scalable execution.
+
+Data replication is the primary method of fault tolerance, which in turn affects the scalability and execution speed further.
+
+<img src="../3. Big Data Integration and Processing/images/apache_spark.png">
+
+Spark was built to support iterative and interactive big data processing pipelines efficiently using an in-memory structure called _Resilient Distributed Datasets_, or shortly, RDDs.
+
+In addition to map and reduce operations, it provides support for a range of transformation operations like join and filter.
+
+In addition to HDFS, Spark can read data from many storage platforms and it provides support for streaming data applications using a technique called micro-batching.
+
+<img src="../3. Big Data Integration and Processing/images/apache_flink.png">
+
+Although Flink has very similar transformations and in-memory data extractions with Spark, it provides direct support for streaming data, making it a lower-latency framework. It provides connection interfaces to streaming data ingestion engines like Kafka and Flume.
+
+In addition to map and reduce, Flink provides abstractions for other data parallel database patterns like join and group by.
+
+One of the biggest advantage of using Flink comes from it's optimizer to pick and apply the best pattern and execution strategy.
+
+<img src="../3. Big Data Integration and Processing/images/apache_beam.png">
+
+<img src="../3. Big Data Integration and Processing/images/apache_storm.png">
+
+Storm has been designed for stream processing in real time with very low-latency. It defined input stream interface abstractions called spouts, and computation abstractions called bolts.
+
+Spouts and bolts can be pipelined together using a data flow approach. That data gets queued until the computation acknowledges the receipt of it. A master node tracks running jobs and ensures all data is processed by the computations on workers.
+
+__Lambda Architecture:__
+
+Lambda Architecture is used as a more general framework that can combine the results of stream and batch processing executed in multiple big data systems.
+
+<img src="../3. Big Data Integration and Processing/images/lambda_architecture_a.png">
+
+<img src="../3. Big Data Integration and Processing/images/lambda_architecture_b.png">
 
 <h3>Introduction to Apache Spark</h3>
 
+Hadoop MapReduce shortcomings:
+- Only for Map and Reduce based computations
+- Relies on reading data from HDFS
+- Native support for Java only
+- No interactive shell support
+- No support for streaming
 
+Basics of Data Analysis with Spark:
+- Expressive Programming model that gives you more than 20 highly efficient distributed operations or transformations.
+- In-memory processing, ability to use cache and process data in memory.
+- Support for diverse workloads including batch and streaming workloads at once.
+- Interactive shell, APIs for Python, Scala, Java and SQL
+
+The Spark Stack:
+
+<img src="../3. Big Data Integration and Processing/images/spark_stack.png">
+
+- Spark Core: includes support for distributed scheduling, memory management and fault tolerance. Interaction with different schedulers, like YARN and Mesos and various NoSQL storage systems like HBase also happen through Spark Core. A very important part of Spark Core is the APIs for defining resilient distributed data sets, or RDDs. RDDs are the main programming abstraction in Spark, which carry data across many computing nodes in parallel, and transform it.
+
+- SparkSQL: provides querying structured and unstructured data through a common query language. It can connect to many data sources and provide APIs to convert query results to RDDs in Python, Scala and Java programs.
+
+- Spark Streaming: is where data manipulations take place in Spark. Although, not a native real-time interface to datastreams, Spark streaming enables creating small aggregates of data called micro-batches coming from streaming data ingestion systems.
+
+- MLlib: is Sparks native library for machine learning algorithms as well as model evaluation.
+
+- GraphX: is the graph analytics library of Spark and enables the Vertex edge data model of graphs to be converted into RDDs as well as providing scalable implementations of graph processing algorithms.
 
 <h3>Getting Started with Spark</h3>
 
+In Hadoop MapReduce, each step, also pipeline, reads from disk to memory, performs the computations and writes back its output from the memory to the disk.
+
+<img src="../3. Big Data Integration and Processing/images/map_reduce_hdfs.png">
+
+However, writing data to disk is a costly operation and this cost becomes even more with large volumes of data. Spark instead takes advantage of faster in memory operations and allows for immediate results of transformations in different stages of the pipeline and memory, like MAP and REDUCE.
+
+<img src="../3. Big Data Integration and Processing/images/stack_rdd.png">
+
+RDDs are how Spark distributes data and computations across the nodes of a commodity cluster, preferably with large memory.
+
+_Datasets:_ Data storage form HDFS, S3, HBase, JSON, text, Local hierarchy of folders or created transforming another RDD. When Spark reads data from these sources, it generates RDDs for them. The Spark operations can transform RDDs into other RDDs like any other data. Here it's important to mention that RDDs are immutable. This means that you cannot change them partially. However, you can create new RDDs by a series of one or many transformations.
+
+_Distributed:_ Distributed across cluster of machines. Divided in partitions, atomic chunks of data.
+
+_Resilient:_ Recover from errors, eg: node failure, slow process. Track history of each partition, re-run.
+
+From a bird's eye view, Spark has two main components, a driver program and worker nodes. The driver program communicates with the cluster manager for monitoring and provisioning of resources and communicates directly with worker nodes to submit and execute tasks. RDDs get created and passed within transformations running in the executable.
+
+A worker node in Spark keeps a running Java virtual machine (JVM). This Java virtual machine is the core that all the computation is executed, and this is also the interface to the rest of the Big Data storage systems and tools.
+
+Spark currently supports mainly three interfaces for cluster management, namely Spark's standalone cluster manager, the Apache Mesos, and Hadoop YARN. Standalone means that there's a special Spark process that takes care of restarting nodes that are failing or starting nodes at the beginning of the computation. YARN and Mesos are two external research measures that can be used also for these purposes.
 
 
 
@@ -514,8 +635,38 @@ __Graph Analysis Techniques__
 
 
 
+<h2>Programming in Spark</h2>
 
 
+<h3>Spark Core: Programming In Spark using RDDs in Pipelines</h3>
+
+
+
+<h3>Spark Core: Transformations</h3>
+
+
+
+<h3>Spark Core: Actions</h3>
+
+
+
+<h2>Main Modules in the Spark Ecosystem</h2>
+
+
+<h3>Spark SQL</h3>
+
+
+
+<h3>Spark Streaming</h3>
+
+
+
+<h3>Spark MLLib</h3>
+
+
+
+
+<h3>Spark GraphX</h3>
 
 
 
