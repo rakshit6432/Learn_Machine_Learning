@@ -640,14 +640,66 @@ Spark currently supports mainly three interfaces for cluster management, namely 
 
 <h3>Spark Core: Programming In Spark using RDDs in Pipelines</h3>
 
+<img src="../3. Big Data Integration and Processing/images/spark_driver.png">
 
+Driver Program that defines the Spark context is the entry point to your application. The driver converts all the data to RDDs, and everything from this point on gets managed using the RDDs. All the transformations and actions on these RDDs take place either locally, or on the Worker Nodes managed by a Cluster Manager. Each transformation results in a new updated version of the RDD. The RDDs at the end get converted and saved in a persistent storage like HDFS or your local drive.
+
+<img src="../3. Big Data Integration and Processing/images/creating_rdd.png">
+
+__Processing RDDs__
+
+There are two types of operations that help with processing in Spark, namely Transformations and Actions.
+
+<img src="../3. Big Data Integration and Processing/images/processing_rdd.png">
+
+Spark uses lazy evaluation for transformations, meaning they will not be immediately executed, but instead wait for an action to be performed. The transformations get computed when an action is executed.
+
+<img src="../3. Big Data Integration and Processing/images/processing_rdd_example.png">
+
+For example,
+
+<img src="../3. Big Data Integration and Processing/images/word_count_example.png">
+
+In order to reuse the RDD created from a database query that could otherwise be costly to re-execute, we can instead cache these RDDs.
+
+Programming in Spark:
+- Create RDDs
+- Apply Transformations
+- Perform actions
 
 <h3>Spark Core: Transformations</h3>
 
+__Narrow Transformations:__
 
+Narrow transformation refers to the processing where the processing logic depends only on data that is already residing in the partition and data shuffling is not necessary.
+
+<img src="../3. Big Data Integration and Processing/images/map_example.png">
+
+In Spark we work by partition and not by element, this is a difference between Spark and MapReduce. The partition is just a chunk of our data with some number of elements in it and the map function gets applied to all elements in that partition in each worker node locally.
+
+<img src="../3. Big Data Integration and Processing/images/flat_map_example.png">
+
+<img src="../3. Big Data Integration and Processing/images/filter_example.png">
+
+<img src="../3. Big Data Integration and Processing/images/coalesce_example.png">
+
+__Wide Transformations:__
+
+In wide transformation operations, processing depends on data residing in multiple partitions distributed across worker nodes and this requires data shuffling over the network to bring related datasets together.
+
+<img src="../3. Big Data Integration and Processing/images/group_by_example.png">
+
+<img src="../3. Big Data Integration and Processing/images/reduce_by_example.png">
+
+Full list of Spark Transformations can be found [here](https://spark.apache.org/docs/1.2.0/programming-guide.html#transformations)
 
 <h3>Spark Core: Actions</h3>
 
+We can simply define actions as RDD operations that trigger the evaluation of the transformation pipeline and return the final result to the driver program or save the results to a persistent storage. We can also call them the last step in a Spark pipeline.
+
+<img src="../3. Big Data Integration and Processing/images/spark_action.png">
+
+The collect action is called and Spark sends all the tasks for execution to the worker notes. Collect will send all the resulting RDDs from the workers and copy them to the Java virtual machine on the driver program. And then, this will be piped also to our Python shell.
 
 
 <h2>Main Modules in the Spark Ecosystem</h2>
@@ -655,20 +707,57 @@ Spark currently supports mainly three interfaces for cluster management, namely 
 
 <h3>Spark SQL</h3>
 
+Spark SQL is the component of Spark that enables querying structured and unstructured data through a common query language. It can connect to many data sources and provides APIs to convert the query results to RDDs in Python, Scala, and Java programs.
 
+Spark SQL also provides APIs to convert the query data into DataFrames to hold distributed data. DataFrames are organized as named columns and basically look like tables. The first step to run any SQL Spark is to create a SQLContext.
+
+```python
+from pyspark.sql import SQLContext
+sqlContext = SQLContext(sc)
+```
+
+Once you have an SQLContext, you want to leverage it to create a DataFrame so you can deploy complex operations on the data set. DataFrames can be created from existing RDDs, Hive tables or many other data sources.
+
+<img src="../3. Big Data Integration and Processing/images/json_dataframe.png">
+
+<img src="../3. Big Data Integration and Processing/images/rdd_dataframe.png">
 
 <h3>Spark Streaming</h3>
 
+Spark Streaming can read data from many different types of resources, including Kafka and Flume. Kafka is a high throughput published subscribed messaging system, and Flume collects and aggregates log data. Spark Streaming can also read from batch input data sources, such as HDFS, S3, and many other non SQL databases. Additionally, Spark Streaming can read directly from Twitter, raw TCP sockets, and many other data sources that are real-time data providers.
 
+<img src="../3. Big Data Integration and Processing/images/spark_d_streams.png">
+
+Spark streaming reads streaming data and converts it into micro batches which we call DStreams which is short for discretized stream. Similar to other RDDs, transformations such as map, reduce, and filter can be applied to DStreams. DStreams can be aggregated into Windows allowing you to apply computations on sliding window of data.
+
+DStreams can be used just like any other RDD and can go through the same transformation as batch datasets.
 
 <h3>Spark MLLib</h3>
 
+MLlib Algorithms & Techniques
+- Machine Learning
+- Classification, regression, clustering, etc.
+- Evaluation metrics
+- Statistics
+- Summary statistics, sampling, etc.
+- Utilities
+- Dimensionality reduction, transformation,
+etc.
 
+<img src="../3. Big Data Integration and Processing/images/ml_lib_stats.png">
 
+<img src="../3. Big Data Integration and Processing/images/ml_lib_classification.png">
+
+<img src="../3. Big Data Integration and Processing/images/ml_lib_clustering.png">
 
 <h3>Spark GraphX</h3>
 
+GraphX is Apache Spark's Application Programming Interface for graphs and graph-parallel computation. GraphX uses a property graph model. This means, both nodes and edges in a graph can have attributes and values.
 
+In GraphX, the node properties are stored in a vertex table and edge properties are stored in an edge table. The connectivity information, that is, which edge connects which nodes, is stored separately from the node and edge properties. GraphX is built on special RDDs for vertices and edges.
+- VertexRDD[A] extends RDD[(VertexID, A)]
+- EdgeRDD[ED, VD] extends RDD[Edge[ED]]
 
+The triplet view logically joins the vertex and edge properties.
 
-<h1>Week 6: Learn By Doing: Putting MongoDB and Spark to Work</h1>
+<img src="../3. Big Data Integration and Processing/images/triplets.png">
