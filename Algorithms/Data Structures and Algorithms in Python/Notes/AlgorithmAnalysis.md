@@ -168,11 +168,65 @@ We analyze algorithms using a mathematical notation for functions that disregard
 
 <h3>The “Big-Oh” Notation</h3>
 
+Let $f(n)$ and $g(n)$ be functions mapping positive integers to positive real numbers. We say that $f(n)$ is $O(g(n))$ if there is a real constant $c > 0$ and an integer constant $n_0 \geq 1$ such that
 
+$$f(n) \leq cg(n), \qquad \text{for} \ n \geq n_0$$
+
+This definition is often referred to as the “big-Oh” notation, for it is sometimes pronounced as “ $f(n)$ is big-Oh of $g(n)$.”
+
+<img src="../images/big_oh.jpg">
+
+The big-Oh notation allows us to say that a function $f(n)$ is “less than or equal to” another function $g(n)$ up to a constant factor and in the asymptotic sense as n grows toward infinity. This ability comes from the fact that the definition uses “$\leq$” to compare $f(n)$ to a $g(n)$ times a constant, c, for the asymptotic cases when $n \geq n_0$. So, it is best to say
+
+"$f(n)$ __is__ $O(g(n))$."
+
+Alternatively, we can say “$f(n)$ is __order of__ $g(n)$.” For the more mathematically inclined, it is also correct to say, “$f(n) \in O(g(n))$,” for the big-Oh notation, technically speaking, denotes a whole collection of functions.
+
+__Characterizing Running Times Using the Big-Oh Notation__
+
+The big-Oh notation is used widely to characterize running times and space bounds in terms of some parameter n, which varies from problem to problem, but is always defined as a chosen measure of the “size” of the problem.
+
+__Some Properties of the Big-Oh Notation__
+
+The big-Oh notation allows us to ignore constant factors and lower-order terms and focus on the main components of a function that affect its growth.
+
+<img src="../images/big_oh_prop_1.jpg">
+
+Thus, the highest-degree term in a polynomial is the term that determines the asymptotic growth rate of that polynomial.
+
+We rely on the mathematical fact that $log \ n \leq n \ \text{for} \ n \geq 1$.
+
+<img src="../images/big_oh_example_1.jpg">
+
+__Characterizing Functions in Simplest Terms__
+
+In general, we should use the big-Oh notation to characterize a function as closely as possible. While it is true that the function $f(n) = 4n^3 + 3n^2$ is $O(n^5)$ or even $O(n^4)$, it is more accurate to say that $f(n)$ is $O(n^3)$.
+
+__Big-Omega__
+
+Just as the big-Oh notation provides an asymptotic way of saying that a function is “less than or equal to” another function, the following notations provide an asymptotic way of saying that a function grows at a rate that is “greater than or equal to” that of another.
+
+Let $f(n)$ and $g(n)$ be functions mapping positive integers to positive real numbers. We say that $f(n)$ is $\Omega(g(n))$, pronounced “ $f(n)$ is big-Omega of $g(n)$,” if $g(n)$ is $O(f(n))$, that is, there is a real constant $c > 0$ and an integer constant $n_0 \geq 1$ such that
+
+$$f(n) \geq cg(n), \qquad \text{for} \ n \geq n_0$$
+
+This definition allows us to say asymptotically that one function is greater than or equal to another, up to a constant factor.
+
+<img src="../images/big_omega_example_1.jpg">
+
+__Big-Theta__
+
+<img src="../images/big_theta.jpg">
+
+<img src="../images/asymptotic_bounding.jpg">
+
+For further reference, watch [Asymptotic Bounding 101: Big O, Big Omega, & Theta](https://www.youtube.com/watch?v=0oDAlMwTrLo)
 
 <h3>Comparative Analysis</h3>
 
 
+
+<img src="../images/big_O_complexity.jpg">
 
 <h3>Examples of Algorithm Analysis</h3>
 
