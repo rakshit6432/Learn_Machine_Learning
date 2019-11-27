@@ -134,10 +134,61 @@ There are other regularization techniques:
 
 <h3>Stochastic gradient descent</h3>
 
+In gradient descent, if we take our loss function as mean squared error, to make one update, we have to sum all the squared errors and this grows huge with increasing number of examples. To overcome this problem we use _stochastic gradient descent_.
 
+<img src="../1. Introduction to Deep Learning/images/stochastic_gradient_descent.jpg">
+
+Stochastic gradient descent is very similar to gradient descent with only one difference. We start with some initialization $w^0$, and then on every step at a time t, we select some random example from our training set and calculate the gradient only on this example and then we take a step in the direction of this gradient. So in stochastic gradient descent we approximate the gradient of all the loss function by the gradient of loss function on only one example.
+
+This can lead to noisy updates due to using one example at a time but on the other hand, it only needs one example on each step and can be used in online settings. One thing we should be careful about is choosing the learning rate. Since the updates are made per example, having too large of a learning rate or too small can lead to overshooting from global minima or getting stuck on local minima. To overcome some of the problems, we can use _mini-batch gradient descent_.
+
+<img src="../1. Introduction to Deep Learning/images/mini_batch_gradient_descent.jpg">
+
+In mini-batch gradient descent, on every iteration we choose m random examples from our training sample. The updates of mini-batch gradient descent have much less noise than stochastic gradient descent and this might still can be used in online learning setting. But the learning rate still should be chosen carefully.
 
 <h3>Gradient descent extensions</h3>
 
+If our function is difficult, for example, it has elliptic level lines then gradient descent will oscillate, and it will take many iterations for it to converge to the minimum. To improve this, we can somehow change our gradient descent methods.
+
+__Momentum__
+
+In this method, we maintain additional vector h at every iteration.
+
+<img src="../1. Introduction to Deep Learning/images/momentum_gradient_descent.jpg">
+
+$h_t$ is just a weighted sum of gradients from all iterations. Suppose that we have some function and for some coordinates of our parameter vector the gradients always have the same sign, so they lead us to the minimum. And for some coordinates, the sign of the gradient changes from iteration to iteration. So, vector $h_t$ would be large for component where gradients have the same sign on every iteration, and will make large steps by this coordinates. And for coordinates that change sign, they will just cancel each other and ht will be close to zero. So, $h_t$ cancels some coordinates that lead to oscillation of gradients, and help us to achieve better convergence.
+
+__Nesterov Momentum__
+
+Nesterov momentum is an extension of the momentum method. In simple momentum method, on every iteration, we calculate the gradient at current point $w^{t-1}$. We take a gradient step from it by $g_t$, and we then get our momentum, $h_t$. But since it's certain that we'll move in the direction of the momentum, it will be more clever to, first, step in the direction of $h_t$ to get some new approximation of parameter vector. And then to calculate gradient at the new point, $w^{t-1} + (-h_t)$.
+
+<img src="../1. Introduction to Deep Learning/images/nesterov_momentum.jpg">
+
+In practice, this method indeed leads to better convergence than momentum method.
+
+Momentum method and Nesterov momentum method work better with difficult functions with complex level sets. But they still require to choose learning rate, and they're very sensitive to it. So now we'll discuss some other optimization methods that try to choose learning rate adaptively, so we don't have to choose it ourselves.
+
+__AdaGrad__
+
+AdaGrad method chooses learning rate adaptively.
+
+<img src="../1. Introduction to Deep Learning/images/AdaGrad.jpg">
+
+But since the auxiliary parameter, G accumulates squares of gradient, and at some step it can become too large. So to somehow overcome this, we need some other methods like AdaGrad. Another advantage of AdaGrad is that it chooses its own learning rate for each example.
+
+__RMSprop__
+
+RMSprop is very similar to AdaGrad, but here we take an exponentially weighted average of squares of gradients on every step.
+
+<img src="../1. Introduction to Deep Learning/images/RMSprop.jpg">
+
+This method overcomes the problem of large sums of square gradients. And here, our learning rate depends only on last examples from our gradient descent method.
+
+__Adam__
+
+In RMSprop, we maintained an additional variable, and it will be augmented by $v^t_j$. And is just an exponentially weighted sum of gradients from all iterations. As we go from momentum method, an approximation of gradient from one step can be noisy and lead to oscillations. So to smooth our gradients we maintain another auxiliary variable, $m^t_j$, that is essentially a sum of gradients.
+
+<img src="../1. Introduction to Deep Learning/images/Adam.jpg">
 
 
 
