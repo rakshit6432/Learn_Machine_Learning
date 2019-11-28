@@ -9,31 +9,68 @@
 
 Linear models are building blocks for deep neural networks.
 
-<img src="../1. Introduction to Deep Learning/images/supervised_learning.png">
+For prediction purposes linear models can sometimes outperform fancier nonlinear models, especially in situations
+- with small numbers of training cases,
+- low signal-to-noise ratio or sparse data.
 
-The goal of machine learning is to find a modal that fits the training set x by the best way.
+For an input vector $X^{\top} = (X_1, X_2, \cdots, X_p)$, and a real valued output $Y$ to predict, the linear regression model has the form
 
-<img src="../1. Introduction to Deep Learning/images/linear_model.png">
+$$f(X) = \beta_0 + \sum_{j=1}^p X_j \beta_j$$
 
-The above equation can be described in vector notation for a matrix of sample $X$ as:
+where $\beta_j$'s are unknown parameters or coefficients and the variables $X_j$ can come from different sources:
+- quantitative inputs;
+- transformations of quantitative inputs, such as log, square-root or square;
+- basis expansions, such as $X_2 = X_1^2, X_3 = X_1^3$, leading to a polynomial representation;
+- numeric or “dummy” coding of the levels of qualitative inputs.
+- interactions between variables, for example, $X_3 = X_1 \cdot X_2$
 
-$$a(X) = Xw$$
+No matter the source of the Xj, the model is _linear in the parameters_.
 
-To measure a quality or measure an error of a model on some set we use the mean squared error for regression:
+<img src="../1. Introduction to Deep Learning/images/least_squares.jpg">
 
-<img src="../1. Introduction to Deep Learning/images/mse.png">
+From a statistical point of view, this criterion is reasonable if the training observations $(x_i,y_i)$ represent independent random draws from their population. Even if the $x_i$’s were not drawn randomly, the criterion is still valid if the $y_i$’s are conditionally independent given the inputs $x_i$.
 
-In the above formula, by subtracting the target value from prediction, we calculate the deviation of target value from a predicted value, then we take a square of it and take the average of these squares of deviations over all the training samples. The next line gives the mean squared error in vector form.
+<img src="../1. Introduction to Deep Learning/images/least_squares_plot.jpg">
 
-Now that we have a loss function, that measures how well our model fits the data, we have to minimize it w.r.t $w$ to our parameter set. This is the essence of machine learning. We optimize loss to find the best model.
+How do we minimize (3.2)? Denote by $X$ the matrix with each row an input vector, and let $y$ be the vector of outputs in the training set. Then we can write the residual sum-of-squares as
 
-If you try to solve this using analytical methods, then you have to invert the matrices:
+$$RSS(\beta) = (y - X \beta)^{\top} (y - X \beta)$$
 
-$$w = (X^{\top} X)^{-1} X^{\top} y$$
+By differentiating the above equation w.r.t $\beta$ we obtain the unique solution
 
-This becomes very difficult when you have more than 100 or 1000 features. Even reducing this to solve a system of linear equations is still quire hard and requires a lots of computational resources.
+$$\hat \beta = (X^{\top}X)^{-1} X^{\top} y$$
+
+Therefore the fitted values at the training inputs are
+
+$$\hat{y} = X \hat{\beta} = X (X^{\top}X)^{-1} X^{\top} y$$
+
+The matrix $H = X (X^{\top}X)^{-1} X^{\top}$ is sometimes called the "hat" matrix.
+
+<img src="../1. Introduction to Deep Learning/images/least_squares_prediction.jpg">
+
+We minimize $RSS(\beta) = \|y − X \beta \|^2$ by choosing $\hat{\beta}$ so that the residual vector $y − \hat{y}$ is orthogonal to this subspace. This orthogonality is the result of assuming that $X$ has full column rank, meaning the columns of the matrix are linearly independent and hence $X^{\top}X$ is positive definite meaning it is a symmetric matrix with all positive eigenvalues. The resulting estimate $\hat{y}$ is hence the _orthogonal projection_ of y onto this subspace. The hat matrix $H$ computes the orthogonal projection, and hence it is also known as a projection matrix.
+
+It might happen that the columns of $X$ are not linearly independent, so that $X$ is not of full rank. This would occur, for example, if two of the inputs were perfectly correlated, (e.g., $x_2 = 3x_1)$. Then $X^{\top}X$ is singular and the least squares coefficients $\hat{\beta}$ are not uniquely defined. However, the fitted values $\hat{y} = X \hat{\beta}$ are still the projection of $y$ onto the column space of $X$; there is just more than one way to express that projection in terms of the column vectors of $X$. The non-full-rank case occurs most often when one or more qualitative inputs are coded in a redundant fashion. There is usually a natural way to resolve the non-unique representation, by recoding and/or dropping redundant columns in $X$.
+
+Rank deficiencies can also occur in signal and image analysis, where the number of inputs p can exceed the number of training cases N. In this case, the features are typically reduced by filtering or else the fitting is controlled by regularization.
+
+Up to now we have made minimal assumptions about the true distribution of the data. In order to pin down the sampling properties of $\hat{\beta}$, we now assume that the observations $y_i$ are uncorrelated and have constant variance $\sigma^2$, and that the $x_i$ are fixed (non random). The variance–covariance matrix of the least squares parameter estimates is then given by
+
+$$Var(\hat{\beta}) = (X^{\top} X)^{-1} \sigma^2$$
+
+To draw inferences about the parameters and the model, additional assumptions are needed. We now assume that the linear regression model is the correct model for the mean; that is, the conditional expectation of Y is linear in $X_1, \cdots ,X_p$. We also assume that the deviations of Y around its expectation are additive and Gaussian. Hence
+
+$$Y = E(Y | X_1, \cdots, X_p) + \epsilon \\
+= \beta_0 + \sum_{j=1}^p X_j \beta_j + \epsilon
+$$
+
+where the error $\epsilon$ is a Gaussian random variable with expectation zero and variance $\sigma^2$. This is a multivariate normal distribution with mean vector and variance–covariance matrix as shown.
+
+In addition $\hat{\beta}$ and $\hat{\sigma}^2$ are statistically independent. We use these distributional properties to form tests of hypothesis and confidence intervals for the parameters $\beta_j$.
 
 <h3>Linear classification</h3>
+
+Since our predictor G(x) takes values in a discrete set $\mathcal{G}$, we can always divide the input space into a collection of regions labeled according to the classification. The boundaries of these regions can be rough or smooth, depending on the prediction function. For an important class of procedures, these decision boundaries are linear; this is what we mean by linear methods for classification.
 
 <img src="../1. Introduction to Deep Learning/images/binary_classification.png">
 
@@ -111,6 +148,8 @@ Usually overfitted models have large weights and good models tend to not have ve
 
 Lambda, the regularization strength controls the tradeoff between model quality on a training set and model complexity.
 
+__Ridge Regression__
+
 For example, we can use _L2 penalty_ as a regularizer where $\|w\| = \sum_{j=1}^d w_j^2$. This regularizer drives all the coefficient closer to zero. So it penalizes our model for very large weights.
 
 It can be shown this unconstrained optimization problem is equivalent to constraint optimization problem:
@@ -118,6 +157,10 @@ It can be shown this unconstrained optimization problem is equivalent to constra
 <img src="../1. Introduction to Deep Learning/images/l2_penalty.jpg">
 
 where there is a one to one correspondence between C and lambda regularization strength.
+
+The ridge solutions are not equivariant under scaling of the inputs, and so one normally standardizes the inputs before solving.
+
+__Lasso Regression__
 
 There is another penalty called _L1 penalty_ where $\|w\|_1 = \sum_{j=1}^d |w_j|$. This drives some weights exactly to zero and is able to learn sparse models but L1 penalty can't be optimized with simple gradient methods because the derivative of an absolute value is zero so we need other optimization techniques. We can also show that this unconstrained optimization problem is equivalent to constraint optimization problem.
 
