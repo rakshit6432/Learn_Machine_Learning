@@ -72,7 +72,7 @@ In addition $\hat{\beta}$ and $\hat{\sigma}^2$ are statistically independent. We
 
 Since our predictor G(x) takes values in a discrete set $\mathcal{G}$, we can always divide the input space into a collection of regions labeled according to the classification. The boundaries of these regions can be rough or smooth, depending on the prediction function. For an important class of procedures, these decision boundaries are linear; this is what we mean by linear methods for classification.
 
-<img src="../1. Introduction to Deep Learning/images/binary_classification.png">
+<img src="../1. Introduction to Deep Learning/images/binary_classification.jpg">
 
 When your labels are either 1 or -1, you essentially have a linear model which needs to be transformed in someway to get -1 or 1, this can be easily done using sine.
 
@@ -239,9 +239,69 @@ In RMSprop, we maintained an additional variable, and it will be augmented by $v
 
 
 
+<h2>The simplest neural network: MLP</h2>
+
+
+<h3>Multilayer perceptron (MLP)</h3>
+
+<img src="../1. Introduction to Deep Learning/images/mlp.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/neuron.jpg">
+
+<h3>Chain rule</h3>
+
+<img src="../1. Introduction to Deep Learning/images/chain_rule.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/computation_graph_derivative.jpg">
+
+<h3>Backpropagation</h3>
+
+Back propagation is a fancy name for an automatic reverse-mode differentiation.
+
+
+<h2>Matrix derivatives</h2>
+
+
+<h3>Efficient MLP implementation</h3>
+
+<img src="../1. Introduction to Deep Learning/images/matrix_multiplication.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/backward_pass_dense.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/gradient_vector.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/python_passes.jpg">
+
+<h3>Other matrix derivatives</h3>
+
+<img src="../1. Introduction to Deep Learning/images/jacobian.jpg">
+
+
+<h2>TensorFlow framework</h2>
+
+
+<h3>What is TensorFlow</h3>
 
 
 
+<h3>Our first model in TensorFlow</h3>
+
+
+
+<h2>An easier framework: Keras</h2>
+
+
+
+
+
+<h2>Philosophy of deep learning</h2>
+
+
+<h3>What Deep Learning is and is not</h3>
+
+
+
+<h3>Deep learning as a language</h3>
 
 
 

@@ -383,11 +383,21 @@ The built-in function, sorted, produces a copy of the original list with element
 
 <h3>By Example</h3>
 
-
+Some claims are of the generic form, “There is an element x in a set S that has property P.” To justify such a claim, we only need to produce a particular x in S that has property P. Likewise, some hard-to-believe claims are of the generic form, “Every element x in a set S has property P.” To justify that such a claim is false, we only need to produce a particular x from S that does not have property P. Such an instance is called a _counterexample_.
 
 <h3>The “Contra” Attack</h3>
 
+Another set of justification techniques involves the use of the negative. The two primary such methods are the use of the _contrapositive_ and the _contradiction_. The use of the contrapositive method is like looking through a negative mirror. To justify the statement “if p is true, then q is true,” we establish that “if q is not true, then p is not true” instead. Logically, these two statements are the same, but the latter, which is called the _contrapositive_ of the first, may be easier to think about.
 
+_Example 3.18_: Let a and b be integers. If ab is even, then a is even or b is even.
+
+_Justification_: To justify this claim, consider the contrapositive, “If a is odd and b is odd, then ab is odd.” So, suppose $a = 2j + 1$ and $b = 2k + 1$, for some integers j and k. Then $ab = 4jk + 2j + 2k + 1 = 2(2jk + j + k) + 1$; hence, ab is odd.
+
+Besides showing a use of the contrapositive justification technique, the previous example also contains an application of _DeMorgan’s Law_. This law helps us deal with negations, for it states that the negation of a statement of the form “p or q” is “not p and not q.” Likewise, it states that the negation of a statement of the form “p and q” is “not p or not q.”
+
+__Contradiction__
+
+Another negative justification technique is justification by contradiction, which also often involves using DeMorgan’s Law. In applying the justification by contradiction technique, we establish that a statement q is true by first supposing that q is false and then showing that this assumption leads to a contradiction (such as $2 \neq 2$ or 1 > 3). By reaching such a contradiction, we show that no consistent situation exists with q being false, so q must be true. Of course, in order to reach this conclusion, we must be sure our situation is consistent before we assume q is false.
 
 <h3>Induction and Loop Invariants</h3>
 
