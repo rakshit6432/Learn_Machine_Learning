@@ -401,6 +401,114 @@ Another negative justification technique is justification by contradiction, whic
 
 <h3>Induction and Loop Invariants</h3>
 
+Most of the claims we make about a running time or a space bound involving the integer parameter n are equivalent to saying some statement $q(n)$ is true "for all $n \geq 1$". Since  this is making a claim about an infinite set of numbers, we cannot justify this exhaustively in a direct fashion.
+
+__Induction__
+
+We can often justify claims such as those above as true, however, by using the technique of _induction_. This technique amounts to showing that, for any particular $n \geq 1$, there is a finite sequence of implications that starts with something known to be true and ultimately leads to showing that $q(n)$ is true.
+
+Specifically, we begin a justification by induction by showing that q(n) is true for n = 1 (and possibly some other values $n = 2, 3, \cdots , k$, for some constant k). Then we justify that the inductive “step” is true for n > k, namely, we show “if q(j) is true for all j < n, then q(n) is true.” The combination of these two pieces completes the justification by induction.
+
+__Loop Invariants__
+
+To prove some statement L about a loop is correct, define $\mathcal{L}$ in terms of a series of smaller statements $\mathcal{L_0, L_1, \cdots, L_k}$ where:
+
+1. The initial claim, $\mathcal{L}_0$, is true before the loop begins.
+2. If $\mathcal{L}_{j-1}$ is true before iteration j, then $\mathcal{L}_j$ will be true after iteration j.
+3. The final statement, $\mathcal{L}_k$, implies the desired statement $\mathcal{L}$ to be true.
 
 
 <h2>Exercises</h2>
+
+
+<h3>Reinforcement</h3>
+
+R-3.2 The number of operations executed by algorithms A and B is $8n \ log \ n$ and $2n^2$, respectively. Determine $n_0$ such that A is better than B for $n \geq n_0$.
+
+R-3.11 Show that if $d(n)$ is $O(f(n))$ and $e(n)$ is $O(g(n))$, then $d(n) + e(n)$ is $O(f(n) + g(n))$.
+
+R-3.12 Show that if $d(n)$ is $O(f(n))$ and $e(n)$ is $O(g(n))$, then $d(n)− e(n)$ is not necessarily $O(f(n)− g(n))$.
+
+R-3.14 Show that $O(max{ f (n),g(n)}) = O(f(n) + g(n)).$
+
+R-3.17 Show that $(n + 1)^5$ is $O(n^5)$.
+
+R-3.18 Show that $2^{n+1}$ is $O(2^n)$.
+
+R-3.19 Show that n is $O(n \ log \ n)$
+
+R-3.23 Give a big-Oh characterization, in terms of n, of the running time of the example1 function.
+
+R-3.24 Give a big-Oh characterization, in terms of n, of the running time of the example2 function.
+
+R-3.27 Give a big-Oh characterization, in terms of n, of the running time of the example5 function.
+
+```python
+def example1(S):
+    """Return the sum of the elements in sequence S."""
+    n = len(S)
+    total = 0
+    for j in range(n):
+        total += S[j]
+    return total
+
+def example2(S):
+    """Return the sum of the elements with even index in sequence S."""
+    n = len(S)
+    total = 0
+    for j in range(0, n, 2):
+        total += S[j]
+    return total
+
+def example5(A, B): # assume that A and B have equal length
+    """Return the number of elements in B equal to the sum of prefix sums in A."""
+    n = len(A)
+    count = 0
+    for i in range(n):
+        total = 0
+        for j in range(n):
+            for k in range(1 + j):
+                total += A[k]
+        if B[i] == total:
+            count += 1
+    return count
+```
+
+R-3.34 There is a well-known city (which will go nameless here) whose inhabitants have the reputation of enjoying a meal only if that meal is the best they have ever experienced in their life. Otherwise, they hate it. Assuming meal quality is distributed uniformly across a person’s life, describe the expected number of times inhabitants of this city are happy with their meals?
+
+<h3>Creativity</h3>
+
+C-3.35 Assuming it is possible to sort n numbers in O(nlogn) time, show that it is possible to solve the three-way set disjointness problem in O(nlogn) time.
+
+C-3.41 Describe an algorithm for finding both the minimum and maximum of n numbers using fewer than 3n/2 comparisons. (Hint: First, construct a group of candidate minimums and a group of candidate maximums.)
+
+C-3.44 Communication security is extremely important in computer networks, and one way many network protocols achieve security is to encrypt messages. Typical cryptographic schemes for the secure transmission of messages over such networks are based on the fact that no efficient algorithms are known for factoring large integers. Hence, if we can represent a secret message by a large prime number p, we can transmit, over the network, the number $r = p \cdot q$, where q > p is another large prime number that acts as the encryption key. An eavesdropper who obtains the transmitted number r on the network would have to factor r in order to figure out the secret message p.
+
+Using factoring to figure out a message is very difficult without knowing the encryption key q. To understand why, consider the following naive factoring algorithm:
+
+```python
+for p in range(2,r):
+    if r % p == 0:                          # if p divides r
+        return "The secret message is p!"
+```
+
+a. Suppose that the eavesdropper uses the above algorithm and has a computer that can carry out in 1 microsecond (1 millionth of a second) a division between two integers of up to 100 bits each. Give an estimate of the time that it will take in the worst case to decipher the secret message p if the transmitted message r has 100 bits.
+
+b. What is the worst-case time complexity of the above algorithm? Since the input to the algorithm is just one large number r, assume that the input size n is the number of bytes needed to store r, that is, $n = \lfloor (log_2 r)/8 \rfloor+ 1$, and that each division takes time O(n).
+
+C-3.50 Let $p(x)$ be a polynomial of degree n, that is, $p(x) = \sum_{i=0}^n a_i x^j$.
+(a) Describe a simple $O(n^2)$-time algorithm for computing p(x).
+(b) Describe an O(nlog n)-time algorithm for computing p(x), based upon a more efficient calculation of $x_i$.
+(c) Now consider a rewriting of p(x) as
+
+$$p(x) = a_0 + x(a_1 + x(a_2 + x(a_3 +··· + x(a_{n−1} + xa_n)···))),$$
+
+which is known as Horner’s method. Using the big-Oh notation, characterize the number of arithmetic operations this method executes.
+
+C-3.54 A sequence S contains n integers taken from the interval [0,4n], with repetitions allowed. Describe an efficient algorithm for determining an integer value k that occurs the most often in S. What is the running time of your algorithm?
+
+<h3>Projects</h3>
+
+P-3.55 Perform an experimental analysis of the three algorithms prefix average1, prefix average2, and prefix average3, from Section 3.3.3. Visualize their running times as a function of the input size with a log-log chart.
+
+P-3.58 For each of the three algorithms, unique1, unique2, and unique3, which solve the element uniqueness problem, perform an experimental analysis to determine the largest value of n such that the given algorithm runs in one minute or less.

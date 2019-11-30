@@ -244,9 +244,19 @@ In RMSprop, we maintained an additional variable, and it will be augmented by $v
 
 <h3>Multilayer perceptron (MLP)</h3>
 
-<img src="../1. Introduction to Deep Learning/images/mlp.jpg">
-
 <img src="../1. Introduction to Deep Learning/images/neuron.jpg">
+
+MLP Notation:
+
+<img src="../1. Introduction to Deep Learning/images/mlp_notation.jpg">
+
+With these notations, the activation $a^l_j$ of the jth neuron in the lth layer is related to the activations in the (l−1)th layer by the equation
+
+<img src="../1. Introduction to Deep Learning/images/activation.jpg">
+
+To rewrite the above expression in a matrix form, we define a weight matrix $w^l$ for each layer, $l$. The entries of the weight matrix $w^l$ are just the weights connecting to that layer l. Similarly, for each layer l we define a bias vector, $b^l$. The last ingredient is the vectorizing function $\sigma$. With these notations, we can write the vectorized form of activation as:
+
+<img src="../1. Introduction to Deep Learning/images/vectorized_activation.jpg">
 
 <h3>Chain rule</h3>
 
@@ -256,7 +266,40 @@ In RMSprop, we maintained an additional variable, and it will be augmented by $v
 
 <h3>Backpropagation</h3>
 
-Back propagation is a fancy name for an automatic reverse-mode differentiation.
+__Backpropagation vs SGD__
+
+Backpropagation is an efficient method of computing gradients in directed graphs of computations, such as neural networks. This is not a learning method, but rather a nice computational trick which is often used in learning methods. This is actually a simple implementation of chain rule of derivatives, which simply gives you the ability to compute all required partial derivatives in linear time in terms of the graph size (while naive gradient computations would scale exponentially with depth).
+
+SGD is one of many optimization methods, namely first order optimizer, meaning, that it is based on analysis of the gradient of the objective. Consequently, in terms of neural networks it is often applied together with backpropagation to make efficient updates. You could also apply SGD to gradients obtained in a different way (from sampling, numerical approximations etc.). Symmetrically you can use other optimization techniques with backpropagation as well, everything that can use gradient/jacobian.
+
+__Backpropagation__
+
+The goal of backpropagation is to compute the partial derivatives ∂C/∂w and ∂C/∂b of the cost function C with respect to any weight w or bias b in the network. For backpropagation to work we need to make two main assumptions about the form of the cost function.
+
+1. The cost function can be written as an average $C = \frac{1}{n} \sum_x C_x$ over cost functions $C_x$ for individual training examples, $x$. The reason we need this assumption is because what backpropagation actually lets us do is compute the partial derivatives $\partial C_x / \partial w$ and $\partial C_x / ∂b$ for a single training example. We then recover ∂C/∂w and ∂C/∂b by averaging over training examples.
+
+2. The cost can be written as a function of the outputs from the neural network, cost C = $C(a^L)$. For example, the quadratic cost function satisfies this requirement, since the quadratic cost for a single training example x may be written as:
+
+<img src="../1. Introduction to Deep Learning/images/quadratic_cost.jpg">
+
+__The four fundamental equations behind backpropagation__
+
+Backpropagation is about understanding how changing the weights and biases in a network changes the cost function. Ultimately, this means computing the partial derivatives $\partial C / \partial w_{jk}^l$ and $\partial C / \partial b_j^l$. But to compute those, we first introduce an intermediate quantity, $\delta_j^l$, which we call the error in the jth neuron in the lth layer. Backpropagation will give us a procedure to compute the error $\delta_j^l$, and then will relate $\delta_j^l$ to $\partial C / \partial w_{jk}^l$ and $\partial C / \partial b_j^l$.
+
+We define the error $\delta_j^l$ as:
+
+$$\delta_j^l \equiv \frac{∂C}{∂z^l_j}$$
+
+
+
+
+
+
+
+
+
+
+
 
 
 <h2>Matrix derivatives</h2>
