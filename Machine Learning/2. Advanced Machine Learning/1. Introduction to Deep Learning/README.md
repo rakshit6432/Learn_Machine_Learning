@@ -121,6 +121,8 @@ Gradient descent is a generic method that can optimize any differentiable loss f
 
 <img src="../1. Introduction to Deep Learning/images/gradient_descent_pseudo_code.png">
 
+<img src="../1. Introduction to Deep Learning/images/gradient_descent_plot.jpg">
+
 <img src="../1. Introduction to Deep Learning/images/mse_derivative.png">
 
 There is an analytical solution to mean squared error but gradient descent has a lot of advantages over the analytical solution:
@@ -258,6 +260,10 @@ To rewrite the above expression in a matrix form, we define a weight matrix $w^l
 
 <img src="../1. Introduction to Deep Learning/images/vectorized_activation.jpg">
 
+<img src="../1. Introduction to Deep Learning/images/w_and_b.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/activation_to_matrix.jpg">
+
 <h3>Chain rule</h3>
 
 <img src="../1. Introduction to Deep Learning/images/chain_rule.jpg">
@@ -274,7 +280,11 @@ SGD is one of many optimization methods, namely first order optimizer, meaning, 
 
 __Backpropagation__
 
-The goal of backpropagation is to compute the partial derivatives ∂C/∂w and ∂C/∂b of the cost function C with respect to any weight w or bias b in the network. For backpropagation to work we need to make two main assumptions about the form of the cost function.
+The goal of backpropagation is to compute the partial derivatives ∂C/∂w and ∂C/∂b of the cost function C with respect to any weight w or bias b in the network.
+
+<img src="../1. Introduction to Deep Learning/images/backpropagation_chain.jpg">
+
+For backpropagation to work we need to make two main assumptions about the form of the cost function.
 
 1. The cost function can be written as an average $C = \frac{1}{n} \sum_x C_x$ over cost functions $C_x$ for individual training examples, $x$. The reason we need this assumption is because what backpropagation actually lets us do is compute the partial derivatives $\partial C_x / \partial w$ and $\partial C_x / ∂b$ for a single training example. We then recover ∂C/∂w and ∂C/∂b by averaging over training examples.
 
@@ -290,15 +300,50 @@ We define the error $\delta_j^l$ as:
 
 $$\delta_j^l \equiv \frac{∂C}{∂z^l_j}$$
 
+Backpropagation is based around four fundamental equations. Together, those equations give us a way of computing both the error $\delta_j^l$ and the gradient of the cost function.
+
+1. An equation for the error in the output layer:
+
+$$δ^L_j = \frac{∂C}{∂a^L_j} σ′(z^L_j)$$
+
+The first term on the right measures how fast the cost is changing as a function of the jth output activation. The second term on the right measures how fast the activation function σ is changing at $z^L_j$.
+
+We can rewrite the above equation in a matrix-based form, as
+
+$$δ^L = ∇_aC ⊙ σ′(z^L)$$
+
+2. An equation for the error in terms of the error in the next layer:
+
+$$δ^l = ((w^{l+1})^{\top} δ^{l+1}) ⊙ σ′(z^l)$$
+
+Suppose we know the error $δ^{l+1}$ at the (l+1)th layer. When we apply the transpose weight matrix, $w^{l+1})^{\top}$, we can think intuitively of this as moving the error backward through the network, giving us some sort of measure of the error at the output of the lth layer.
+
+By combining equation  1 and 2, we can compute the error for any layer in the network.
+
+3. An equation for the rate of change of the cost with respect to any bias in the network:
+
+$$\frac{∂C}{∂b^l_j} = δ_j^l$$
+
+4. An equation for the rate of change of the cost with respect to any weight in the network:
+
+$$\frac{∂C}{∂w^l_{jk}} = a_k^{l-1} δ_j^l$$
+
+A weight will learn slowly if either the input neuron is low-activation (the σ function becomes very flat when $σ(z^L_j)$ is approximately 0 or 1. When this occurs we will have $σ′(z^L_j) \approx 0)$, or if the output neuron has saturated, i.e., is either high- or low-activation.
+
+__The backpropagation algorithm__
+
+<img src="../1. Introduction to Deep Learning/images/backpropagation_equations.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/backpropagation_algorithm.jpg">
 
 
 
 
-
-
-
-
-
+Review these videos from 3Blue1Brown:
+- [But what is a Neural Network? | Deep learning, chapter 1](https://www.youtube.com/watch?v=aircAruvnKk&t=922s)
+- [Gradient descent, how neural networks learn | Deep learning, chapter 2](https://www.youtube.com/watch?v=IHZwWFHWa-w&t=8s)
+- [What is backpropagation really doing? | Deep learning, chapter 3](https://www.youtube.com/watch?v=Ilg3gGewQ5U&t=579s)
+- [Backpropagation calculus | Deep learning, chapter 4](https://www.youtube.com/watch?v=tIeHLnjs5U8)
 
 
 
