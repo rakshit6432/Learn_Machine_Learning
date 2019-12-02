@@ -241,6 +241,27 @@ In RMSprop, we maintained an additional variable, and it will be augmented by $v
 
 
 
+<h3>Perceptrons</h3>
+
+A perceptron takes several binary inputs, $x_1, x_2, \cdots,$ and produces a single binary output. Weights, $w_1, w_2, \cdots,$ real numbers express the importance of the respective inputs to the output. The neuron's output, 0 or 1, is determined by whether the weighted sum $\sum_j w_j x_j$ is less than or greater than some threshold value, (-bias). Just like the weights, the threshold is a real number which is a parameter of the neuron.
+
+A network of perceptrons can be used to simulate a circuit containing many NAND gates. And because NAND gates are universal for computation, it follows that perceptrons are also universal for computation. The computational universality of perceptrons is simultaneously reassuring and disappointing. It's reassuring because it tells us that networks of perceptrons can be as powerful as any other computing device. But it's also disappointing, because it makes it seem as though perceptrons are merely a new type of NAND gate. That's hardly big news!
+
+<h3>Sigmoid neurons</h3>
+
+Let's say we want to devise a learning algorithm that can automatically tune the weights and biases of a network of artificial neurons. We can define learning as when we make a small change in some weight (or bias) in the network, this small change in weight causes a small corresponding change in the output of the network.
+
+Now, if our network contains perceptrons, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. We can overcome this problem by introducing a new type of artificial neuron called a _sigmoid neuron_.
+
+Sigmoid neurons are similar to perceptrons, but modified so that small changes in their weights and bias cause only a small change in their output. Just like a perceptron, the sigmoid neuron has inputs, but instead of being just 0 or 1, these inputs can also take on any values between 0 and 1. Also just like a perceptron, the sigmoid neuron has weights for each input and an overall bias b, but the output is not 0 or 1. Instead it's $σ (w \cdot x + b)$ where σ is called the _sigmoid function_ (a.k.a _logistic function_) and is defined by:
+
+$$σ(z) = \frac{1}{1 + e^{-z}}$$
+
+<img src="../1. Introduction to Deep Learning/images/activation_functions.jpg">
+
+The purpose of activation functions is to introduce non-linearities into the network.
+
+
 <h2>The simplest neural network: MLP</h2>
 
 
@@ -336,8 +357,11 @@ __The backpropagation algorithm__
 
 <img src="../1. Introduction to Deep Learning/images/backpropagation_algorithm.jpg">
 
+In practice, it's common to combine backpropagation with a learning algorithm such as stochastic gradient descent, in which we compute the gradient for many training examples.
 
+<img src="../1. Introduction to Deep Learning/images/gradient_descent_with_backprop.jpg">
 
+The backpropagation algorithm is a clever way of keeping track of small perturbations to the weights (and biases) as they propagate through the network, reach the output, and then affect the cost.
 
 Review these videos from 3Blue1Brown:
 - [But what is a Neural Network? | Deep learning, chapter 1](https://www.youtube.com/watch?v=aircAruvnKk&t=922s)
