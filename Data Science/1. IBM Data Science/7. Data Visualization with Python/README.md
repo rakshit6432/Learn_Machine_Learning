@@ -63,5 +63,16 @@ Matplotlib's architecture is composed of three main layers:
 <h2>Advanced Visualization Tools</h2>
 
 
+<h3>Waffle Charts</h3>
+
+A waffle chart is a great way to visualize data in relation to a whole or to highlight progress against a given threshold.
+
+<h3>Word Clouds</h3>
+
+
+<h3>Seaborn and Regression Plots</h3>
+
+
+
 
 <h2>Visualizing Geospatial Data</h2>
