@@ -389,33 +389,27 @@ Review these videos from 3Blue1Brown:
 <img src="../1. Introduction to Deep Learning/images/jacobian.jpg">
 
 
-<h2>TensorFlow framework</h2>
-
-
-<h3>What is TensorFlow</h3>
-
-
-
-<h3>Our first model in TensorFlow</h3>
-
-
-
-<h2>An easier framework: Keras</h2>
-
-
-
-
-
 <h2>Philosophy of deep learning</h2>
 
 
 <h3>What Deep Learning is and is not</h3>
 
+__Downsides__
 
+- No Core theory
+    - Relies on intuitive reasoning
+- Needs tons of data
+    - You need either large dataset or heavy wizardy
+- Computationally heavy
+    - Running on mobiles/embedded is a challenge
+- Pathologically overhyped
+    - People expect of it to make wonders
+
+Deep learning is a language in which you can hint your model on what you want it to learn.
 
 <h3>Deep learning as a language</h3>
 
-
+A way of producing hints is by the way you train the model.
 
 
 
@@ -423,10 +417,170 @@ Review these videos from 3Blue1Brown:
 
 
 
+<h2>Introduction to CNN</h2>
+
+
+<h3>Motivation for convolutional layers</h3>
+
+<img src="../1. Introduction to Deep Learning/images/image_representation.jpg">
+
+A MLP can't be used for image related tasks because:
+1. If an object is in different position than where it was in during training in an image, the network won't be able to identify it because it optimized the neurons in specific locations using backpropagation to learn the object as it was on the training image.
+
+<img src="../1. Introduction to Deep Learning/images/cat_mlp.jpg">
+
+Convolution is a dot product of a kernel, or a filter, and a patch of an image (local receptive field) of the same size:
+
+<img src="../1. Introduction to Deep Learning/images/convolution.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/convolution_example.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/convolution_correlation.jpg">
+
+Another interesting property of convolution is translation equivariance. It means that if we move the input (translate) and imply convolution, it will actually act the same as if we first applied convolution, and then translated an image.
+
+<img src="../1. Introduction to Deep Learning/images/convolution_translation.jpg">
+
+__How does Convolutional Neural Networks Work__
+
+
+__Backpropagation for CNN__
+
+Gradients are first calculated as if the kernel weights were not shared. Then the gradients of the same shared weights are summed up.
+
+<img src="../1. Introduction to Deep Learning/images/convolution_backprop.jpg">
+
+__Convolutional vs fully connected layer__
+
+- In convolutional layer, the same kernel is used for every output neuron, and that way, we share parameters of the network and train a better model.
+
+- Convolutional layer can be viewed as a special case of a fully connected layer when all the weights outside the local receptive field of each neuron equals zero, and kernel parameter are shared between neurons.
+
+<h3>Our first CNN architecture</h3>
+
+__A Color Image Input__
+
+<img src="../1. Introduction to Deep Learning/images/color_image.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/kernel_not_enough.jpg">
+
+<img src="../1. Introduction to Deep Learning/images/receptive_field.jpg">
+
+So to grow the receptive field faster, we can increase the _stride_ in our convolutional layer to reduce the output dimensions.
+
+<img src="../1. Introduction to Deep Learning/images/stride.jpg">
+
+But how do we maintain translational invariance with the stride? We use pooling layers.
+
+<img src="../1. Introduction to Deep Learning/images/pooling.jpg">
+
+But how does back propagation works for max pooling layer? Strictly speaking, maximum is not a differentiable function,but we will apply some heuristics here and make it work.
+
+
+<h2>Modern CNNs</h2>
+
+
+<h3>Training tips and tricks for deep CNNs</h3>
+
+__Activation Functions__
+
+- Sigmoid Activation
+
+<img src="../1. Introduction to Deep Learning/images/sigmoid_activation.jpg">
+
+For huge positive or huge negative argument (like 10 or -10) the sigmoid function derivative becomes close to 0. Using the chain rule when we will multiply further gradients by this small number it will lead to slow convergence. This is called the problem of vanishing gradients.
+
+Two other problems are, one the output of the sigmoid is not zero centered, remember  that neural networks like when the inputs have zero mean and standard variance (normalized). Two, the exponent of x is computationally expensive.
+
+- Tanh Activation
+
+<img src="../1. Introduction to Deep Learning/images/tanh_activation.jpg">
+
+Is zero centered but pretty much like sigmoid
+
+- ReLu Activation
+
+<img src="../1. Introduction to Deep Learning/images/relu_activation.jpg">
+
+Is fast to compute, its gradients do not vanish for positive x's, and in practice it provides faster convergence. But it has problems too, one it is not zero centered, and two, it can die because this activation function is zero for a negative axis. Which means that if you're unlucky during initialization of your neuron, you can have weights that will give you zero activation and this neuron will never update because for that part where x is less than zero, you have zero gradient.
+
+- Leaky ReLu Activation
+
+<img src="../1. Introduction to Deep Learning/images/leaky_relu_activation.jpg">
+
+__Weights Initialization__
+
+- Zero initialization: Fails to break symmetry because neurons in the same layer will learn the same thing (because of backpropagation they will always get the same updates).
+
+-  Linear models work best when inputs are normalized. Neuron is a linear combination of inputs plus activation. Neuron output will be used by consecutive layers. That means that it would be great if we can normalize the outputs of the neuron.
+
+- It's important to constrain the variance of hidden outputs in our network. Because that leads to constrained gradients and that leads to better convergence. When gradients of different outputs become of different scale (like 1 to 100) gradient descent methods slow down drastically, this is called ill-conditioning.
+
+__Batch Normalization__
+
+Batch normalization that controls mean and variance of outputs before activations.
+
+<img src="../1. Introduction to Deep Learning/images/batch_normalization.jpg">
+
+__Dropout__
+
+<img src="../1. Introduction to Deep Learning/images/dropout.jpg">
+
+__Data Augmentations__
 
 
 
+<h3>Overview of modern CNN architectures</h3>
 
+__AlexNet__
+
+<img src="../1. Introduction to Deep Learning/images/alexnet.jpg">
+
+__VGG (2015)__
+
+<img src="../1. Introduction to Deep Learning/images/vgg.jpg">
+
+__Inception V3 (2015)__
+
+<img src="../1. Introduction to Deep Learning/images/inception.jpg">
+
+- 1x1 Convolutions
+
+<img src="../1. Introduction to Deep Learning/images/1_1_convolutions.jpg">
+
+- Basic Inception Block
+
+<img src="../1. Introduction to Deep Learning/images/inception_block.jpg">
+
+__ResNet (2015)__
+
+<img src="../1. Introduction to Deep Learning/images/resnet.jpg">
+
+- Residual Connections
+
+<img src="../1. Introduction to Deep Learning/images/residual_connections.jpg">
+
+
+<h2>Applications of CNNs</h2>
+
+
+<h3>Learning new tasks with pre-trained CNNs</h3>
+
+__Transfer Learning__
+
+
+<h3>A glimpse of other Computer Vision tasks</h3>
+
+<img src="../1. Introduction to Deep Learning/images/other_cv_tasks.jpg">
+
+__Semantic Segmentation__
+
+- Max unpooling
+
+- Learnable unpooling
+
+
+__Object Detection + localization__
 
 
 
