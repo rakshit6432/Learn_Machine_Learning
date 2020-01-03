@@ -5,9 +5,9 @@
 <h2>Unit 1: Introduction</h2>
 
 
-[Lecture 1: Algorithmic thinking, peak finding](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Introduction%20to%20Algorithms/Notes/Lec1.md)
+[Lecture 1: Algorithmic thinking, peak finding](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Introduction%20to%20Algorithms/Notes/Lec1and2.md)
 
-[Lecture 2: Models of computation, document distance](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Introduction%20to%20Algorithms/Notes/Lec2.md)
+[Lecture 2: Models of computation, document distance](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/tree/master/Algorithms/Introduction%20to%20Algorithms/Notes/Lec1and2.md)
 
 
 <h2>Unit 2: Sorting and Trees</h2>

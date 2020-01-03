@@ -193,31 +193,12 @@ _Deep copy_ is a process in which the copying process occurs recursively. It mea
 
 R-2.4 Write a Python class, Flower, that has three instance variables of type str, int, and float, that respectively represent the name of the flower, its number of petals, and its price. Your class must include a constructor method that initializes each variable to an appropriate value, and your class should include methods for setting the value of each type, and retrieving the value of each type.
 
-R-2.6 If the parameter to the make payment method of the CreditCard class were a negative number, that would have the effect of raising the balance on the account. Revise the implementation so that it raises a ValueError if a negative value is sent.
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/2.ObjectOrientedProgramming/flower.py)
 
 R-2.9 Implement the __sub__ method for the Vector class of Section 2.3.3, so that the expression u−v returns a new vector instance representing the difference between two vectors.
 
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/2.ObjectOrientedProgramming/vector.py)
+
 R-2.10 Implement the __neg__ method for the Vector class of Section 2.3.3, so that the expression −v returns a new vector instance whose coordinates are all the negated values of the respective coordinates of v.
 
-R-2.11 In Section 2.3.3, we note that our Vector class supports a syntax such as v = u + [5, 3, 10, −2, 1], in which the sum of a vector and list returns a new vector. However, the syntax v = [5, 3, 10, −2, 1] + u is illegal. Explain how the Vector class definition can be revised so that this syntax
-generates a new vector.
-
-R-2.12 Implement the __mul__ method for the Vector class of Section 2.3.3, so that the expression v 3 returns a new vector with coordinates that are 3 times the respective coordinates of v.
-
-R-2.13 Exercise R-2.12 asks for an implementation of __mul__, for the Vector class of Section 2.3.3, to provide support for the syntax v 3. Implement the __rmul__ method, to provide additional support for syntax 3 v.
-
-R-2.14 Implement the __mul__ method for the Vector class of Section 2.3.3, so that the expression u v returns a scalar that represents the dot product of the vectors.
-
-<h3>Creativity</h3>
-
-C-2.31 Write a Python class that extends the Progression class so that each value in the progression is the absolute value of the difference between the previous two values. You should include a constructor that accepts a pair of numbers as the first two values, using 2 and 200 as the defaults.
-
-C-2.32 Write a Python class that extends the Progression class so that each value in the progression is the square root of the previous value. (Note that you can no longer represent each value with an integer.) Your constructor should accept an optional parameter specifying the start value, using 65,536 as a default.
-
-<h3>Projects</h3>
-
-P-2.35 Write a set of Python classes that can simulate an Internet application in which one party, Alice, is periodically creating a set of packets that she wants to send to Bob. An Internet process is continually checking if Alice has any packets to send, and if so, it delivers them to Bob’s computer, and Bob is periodically checking if his computer has a packet from Alice, and, if so, he reads and deletes it.
-
-P-2.38 Write a Python program that simulates a system that supports the functions of an e-book reader. You should include methods for users of your system to “buy” new books, view their list of purchased books, and read their purchased books. Your system should use actual books, which have expired copyrights and are available on the Internet, to populate your set of available books for users of your system to “purchase” and read
-
-P-2.39 Develop an inheritance hierarchy based upon a Polygon class that has abstract methods area() and perimeter(). Implement classes Triangle, Quadrilateral, Pentagon, Hexagon, and Octagon that extend this base class, with the obvious meanings for the area() and perimeter() methods. Also implement classes, IsoscelesTriangle, EquilateralTriangle, Rectangle, and Square, that have the appropriate inheritance relationships. Finally, write a simple program that allows users to create polygons of the various types and input their geometric dimensions, and the program then outputs their area and perimeter. For extra effort, allow users to input polygons by specifying their vertex coordinates and be able to test if two such polygons are similar.
+[Solution](https://github.com/mukeshmithrakumar/Learn_ML_in_6_Months/blob/master/Algorithms/codes/2.ObjectOrientedProgramming/vector.py)

@@ -76,3 +76,14 @@ A waffle chart is a great way to visualize data in relation to a whole or to hig
 
 
 <h2>Visualizing Geospatial Data</h2>
+
+
+<h3>Introduction to Folium</h3>
+
+With Folium, you can create a map of any location in the world as long as you know its latitude and longitude values. You can also create a map and superimpose markers as well as clusters of markers on top of the map for cool and very interesting visualizations.
+
+<h3>Maps with Markers</h3>
+
+
+
+<h3>Choropleth Maps</h3>
