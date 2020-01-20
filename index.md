@@ -4,3 +4,5 @@
 
 
 <a href="/Machine Learning/1. Mathematics for Machine Learning/1. Linear Algebra/README.md">Machine Learning</a>
+
+* [Machine Learning: Linear Algebra](./Machine Learning/1. Mathematics for Machine Learning/1. Linear Algebra/README.md)
