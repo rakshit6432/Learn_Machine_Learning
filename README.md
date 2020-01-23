@@ -1,6 +1,6 @@
 <img src="./images/cover.jpg">
 
-<h1 id="HackerRankSolutions" align="center" >Learn Machine Learning in 6 Months</h1>
+<h1 id="HackerRankSolutions" align="center" >Learn Machine Learning</h1>
 
 
 <h2>Introduction</h2>
